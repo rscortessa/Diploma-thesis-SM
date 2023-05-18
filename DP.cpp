@@ -12,7 +12,7 @@ void initcond(std::vector<bool> &sys, bool s,std::mt19937& e2);
 void evolution(std::vector<bool> &sys, double p, std::uniform_real_distribution<double>& a, std::mt19937& e2);
 void print_state(std::vector<bool> &sys, std::ofstream& filename);
 void print(std::vector<bool> &sys, std::ofstream& filename, int t);
-void count(std::vector<bool> &sys, std::vector<double>& b, int t,int m);
+void count(std::vector<bool> &sys, std::vector<double>& b, int time,int m,int t);
 void orderparameter(std::vector<double>& b,std::ofstream& filename, int t);
 
 int main(int argc,char* argv[])
@@ -21,7 +21,7 @@ int main(int argc,char* argv[])
   int t=std::stoi(std::string(argv[2])); // time steps
   int pp=std::stoi(std::string(argv[3]));
   double p=pp/(1000.0); // Probability
-  N=100;
+  N=1000;
 
   
   std::string name,name1,name2;
@@ -52,7 +52,7 @@ int main(int argc,char* argv[])
 	      print(sys,file1,j);
 	    }	  
 	  evolution(sys,p,dist0,e2);
-	  count(sys,rho,j,l);
+	  count(sys,rho,j,l,t);
 	}
     }
       orderparameter(rho,file2,t);
@@ -112,7 +112,7 @@ void print(std::vector<bool> &sys, std::ofstream& filename, int t)
     }
 }
 
-void count(std::vector<bool> &sys, std::vector<double>& b, int t,int m)
+void count(std::vector<bool> &sys, std::vector<double>& b, int time,int m, int t)
 {
   int a=0;
   for(int i=0;i<sys.size();i++)
@@ -120,8 +120,8 @@ void count(std::vector<bool> &sys, std::vector<double>& b, int t,int m)
       a=a+sys[i];
     }
   //int a=std::accumulate(sys.begin(),sys.end(),0);
-  b[m*N+t]=a/(sys.size()*1.0);
-  std::cout<<b[m*N+t]<<std::endl;
+  b[m*t+time]=a/(sys.size()*1.0);
+  std::cout<<b[m*t+time]<<std::endl;
 }
 
 void orderparameter(std::vector<double>& b,std::ofstream& filename, int t)
@@ -132,7 +132,7 @@ void orderparameter(std::vector<double>& b,std::ofstream& filename, int t)
     {
       for(int j=0;j<t;j++)
 	{
-	  rho[j]=rho[j]+b[i*N+j]/(N*1.0);
+	  rho[j]=rho[j]+b[i*t+j]/(N*1.0);
 	}
     }
   
@@ -140,7 +140,7 @@ void orderparameter(std::vector<double>& b,std::ofstream& filename, int t)
     {
       for(int j=0;j<t;j++)
 	{
-	  var[j]=var[j]+std::pow(b[i*N+j]-rho[j],2);
+	  var[j]=var[j]+std::pow(b[i*t+j]-rho[j],2);
 	  if(i==N-1)
 	    {
 	      var[j]=std::pow(var[j]/(N*(N-1)*1.0),0.5);
