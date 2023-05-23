@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Data files
+*.txt
+
+# Auto-Saved files
+*~
