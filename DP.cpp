@@ -31,8 +31,7 @@ int main(int argc,char* argv[])
   std::uniform_real_distribution<double> dist0(0,1);      
 
   aux=initcond(L,e2,sites);
-  int sum=std::accumulate(aux.begin(),aux.end(),0);
-  std::cout<<sum<<std::endl;
+  
   for(int l=0;l<N;l++)
     {
         
@@ -46,11 +45,13 @@ int main(int argc,char* argv[])
 	    {
 	      print_state(sys,file);
 	      print(sys,file1,j);
-	    }	  
-	  evolution(sys,p,dist0,e2);
+	    }
 	  count(sys,rho,j,l,t);
+	  evolution(sys,p,dist0,e2);
+	  
 	}
     }
+      
       orderparameter(rho,file2,t,N);
   
   

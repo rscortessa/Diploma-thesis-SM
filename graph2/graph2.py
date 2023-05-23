@@ -18,7 +18,7 @@ def LinearR2(col_1, col_2):
     COEF =  np.array(COEF)
     return COEF
 
-S=["$S="+sys.argv[4]+"$","$S="+sys.argv[5]+"$","$S="+sys.argv[6]+"$"]
+S=["$S="+sys.argv[4]+"$","$S="+sys.argv[5]+"$","$S="+sys.argv[6]+"$","$S="+sys.argv[7]+"$","$S="+sys.argv[8]+"$"]
 
 plt.figure()
 plt.title("$Directed\; Percolation\; in\; (1+1)\; dimensions$ \n"+"$\;L="+str(L)+"\;t="+str(t)+"$")
@@ -27,13 +27,13 @@ plt.ylabel(r"$\rho(t)$")
 plt.xscale("log")
 plt.yscale("log")
 plt.ylim([0.1,1])
-for i in range(3):
+for i in range(5):
     B=pd.read_csv("./graph2/DP_OP_L"+sys.argv[1]+"T"+sys.argv[2]+"P"+sys.argv[3]+"S"+sys.argv[4+i]+".txt",delim_whitespace=True,header=None)
     eps=B[0]
     zet=B[1]
     iot=B[2]
     plt.errorbar(eps,zet,yerr=iot,label=r"$\rho(t)$"+" "+S[i])
-    if i==2:
+    if i==4:
         x=np.array(eps[1:]).reshape((-1,1))
         zet=np.array(zet)
         Result=LinearR2(np.log(x),np.log(zet[1:]))
