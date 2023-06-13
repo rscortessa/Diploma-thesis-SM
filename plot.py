@@ -6,7 +6,7 @@ import sys
 # Initialization of the variables
 
 L=int(sys.argv[1])
-t=int(sys.argv[2])
+t=int(float(sys.argv[2]))
 pp=int(sys.argv[3])/(10000)
 sites=int(sys.argv[4])
 
@@ -49,6 +49,8 @@ zet=B[1]
 iot=B[2]
 plt.figure()
 plt.title("$Directed\; Percolation\; in\; (1+1)\; dimensions$ \n"+"$\;L="+str(L)+"\;\;t="+str(t)+"\;\;p="+str(pp)+"\;\;I.sites="+str(sites)+"$")
+plt.xscale("log")
+plt.yscale("log")
 plt.xlabel(r"$t$")
 plt.ylabel(r"$\rho(t)$")
 plt.errorbar(eps,zet,yerr=iot,label=r"$\rho(t)$")

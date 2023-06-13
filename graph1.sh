@@ -1,20 +1,9 @@
 #!bin/bash
-rm *.x
-make main.x
-s=12000
-y=10000
-for ss in 6425 6447 6460
-do
-    make MonteCarlo L=$s t=$y pp=$ss dir="./graph1/" &
-    
-done
-wait
-for ss in 6425 6447 6460
-do
-    mv "./DP_L"$s"T"$y"P"$ss".txt" "./graph1/."
-    mv "./DP_L"$s"T"$y"P"$ss"data.txt" "./graph1/."
-    mv "./DP_OP_L"$s"T"$y"P"$ss".txt" "./graph1/."
-done
-wait
+L=$1
+#t=$( echo "scale=0; (sqrt($L)*$L)" | bc)
+t=$5
+p="$2 $3 $4"
+make varyp dir=./graph1/ starting=OP_ pnumbers="$2 $3 $4" L=$L t=$t
+python3 ./graph1/graph1.py $L $t $p 
 
-python3 ./graph1/graph1.py $s $y 6425 6447 6460
+

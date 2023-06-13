@@ -6,6 +6,7 @@ import sys
 from sklearn.linear_model import LinearRegression
 import statsmodels.api as sm
 
+print(len(sys.argv))
 L=int(sys.argv[1])
 t=int(sys.argv[2])
 p=int(sys.argv[3])
@@ -26,7 +27,7 @@ plt.xlabel(r"$t$")
 plt.ylabel(r"$\rho(t)$")
 plt.xscale("log")
 plt.yscale("log")
-plt.ylim([0.1,1])
+#plt.ylim([0.1,1])
 for i in range(5):
     B=pd.read_csv("./graph2/DP_OP_L"+sys.argv[1]+"T"+sys.argv[2]+"P"+sys.argv[3]+"S"+sys.argv[4+i]+".txt",delim_whitespace=True,header=None)
     eps=B[0]

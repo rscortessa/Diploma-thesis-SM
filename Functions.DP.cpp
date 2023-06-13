@@ -9,6 +9,13 @@ std::vector<bool>  initcond(int L,std::mt19937& e2,int N)
   std::vector<bool> b(L,0);
   std::generate(a.begin(), a.end(), [i = 0]() mutable { return i++;});
   std::uniform_int_distribution<> dist1(0,L-1);
+
+  if(N==1)
+    {
+      int er=L/2.0;
+	b[er]=1;
+      return b;
+    }
   
   for(int i=0;i<N;i++)
     {
@@ -21,17 +28,18 @@ std::vector<bool>  initcond(int L,std::mt19937& e2,int N)
 }
 
 
-void evolution(std::vector<bool> &sys,double p,std::uniform_real_distribution<double>& a, std::mt19937& e2)
+void evolution(std::vector<bool> &sys,double p,std::uniform_real_distribution<double>& a, std::mt19937& e2, int L)
 {
   std::vector<bool> copy;
   bool c;
   bool d;
   copy=sys;
-  for(int i=0;i<sys.size();i++)
+  for(int i=1;i<sys.size()+1;i++)
     {
+      
       c= (copy[i-1]==1 && a(e2)<=p);
-      d= (copy[i+1]==1 && a(e2)<=p);
-      sys[i]= (c || d);
+      d= (copy[(i+1)%L]==1 && a(e2)<=p);
+      sys[i%L]= (c || d);
     }
 }
 
@@ -40,7 +48,6 @@ void print_state(std::vector<bool> &sys, std::ofstream& filename)
 {
   auto finit = [&filename](const bool& a) { filename << a << " ";};
   std::for_each(sys.begin(),sys.end(),finit);
-  filename <<"\n";
 }
 
 

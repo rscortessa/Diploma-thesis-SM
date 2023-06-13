@@ -3,57 +3,34 @@
 //This file creates the evolution for the Bond percolation system, it is specified the time t,
 //the lattice sites L and the probability p.
 
+
+
+
 int main(int argc,char* argv[])
 {
-  int L=std::stoi(std::string(argv[1]));// Lattice sites
-  int t=std::stoi(std::string(argv[2])); // time steps
-  int pp=std::stoi(std::string(argv[3])); // probability*(10000) 
-  int sites=std::stoi(std::string(argv[4])); // Initial Active sites
-  double p=pp/(10000.0); // Probability
-  int N=1000; // Number of repetitions
+  DECLARE_VARIABLES // All the variables are declared    
+  RANDOM // The random distribution function from 0 to 1 is declared 
+  std::string name1,name2;
+  name1=dir+"DP_L"+std::to_string(L)+"T"+std::to_string(t)+"P"+std::to_string(pp)+"S"+std::to_string(sites)+"data.txt";
+  name2=dir+"DP_OP_L"+std::to_string(L)+"T"+std::to_string(t)+"P"+std::to_string(pp)+"S"+std::to_string(sites)+".txt";
+  std::ofstream file1(name1), file2(name2);
   
-  
-  std::string name,name1,name2;
-
-  name="DP_L"+std::to_string(L)+"T"+std::to_string(t)+"P"+std::to_string(pp)+"S"+std::to_string(sites)+".txt";
-  name1="DP_L"+std::to_string(L)+"T"+std::to_string(t)+"P"+std::to_string(pp)+"S"+std::to_string(sites)+"data.txt";
-  name2="DP_OP_L"+std::to_string(L)+"T"+std::to_string(t)+"P"+std::to_string(pp)+"S"+std::to_string(sites)+".txt";
-
-  std::ofstream file(name), file1(name1), file2(name2);
-
-
-  std::vector<bool> sys(L,0);  
-  std::vector<bool> aux(L,0);
-  std::vector<double> rho(t*N,0);
-
-  std::random_device rd;
-  std::mt19937 e2(rd());
-  std::uniform_real_distribution<double> dist0(0,1);      
-
-  aux=initcond(L,e2,sites);
-  
-  for(int l=0;l<N;l++)
+  aux=initcond(L,e2,sites); // Initialize the first srtup 
+  for(int l=0;l<N;l++) // for between different samples
     {
-        
-      std::random_device rd;
-      std::mt19937 e2(rd());
-      std::uniform_real_distribution<double> dist0(0,1);      
-      sys=aux;
+      RANDOM // initialize the distribution with a different seed
+      sys=aux; // The initial setup is always the same 
       for(int j=0;j<t;j++)
 	{
-	  if(l==N-1)
+	  if(l==N-1) // The last sample is printed
 	    {
-	      print_state(sys,file);
-	      print(sys,file1,j);
+	      print(sys,file1,j); // This prints to file1 the positions in space and time of the active sites
 	    }
-	  count(sys,rho,j,l,t);
-	  evolution(sys,p,dist0,e2);
-	  
+	  count(sys,rho,j,l,t); // Counts the number of active sites per time
+	  evolution(sys,p,dist0,e2,L); // Evolves the system
 	}
     }
-      
-      orderparameter(rho,file2,t,N);
-  
+      orderparameter(rho,file2,t,N); // prints to a file the density of active sites
   
   return 0;
 }
