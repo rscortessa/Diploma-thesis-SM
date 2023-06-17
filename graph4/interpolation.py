@@ -29,13 +29,13 @@ dp=int(arg[2])
 N=int(arg[3])
 zas=int(arg[4])
 allsys=int(arg[5]); system=["Equilibrium","Total\;system"]
-
+neighbors=int(arg[7])
 m=dp/zas*N
-AA=os.listdir("./graph4/")
+AA=os.listdir("./")
 BB=[]
 
 for x in AA:
-    if re.match("DP_L[0-9]+T[0-9]+P\("+str(pp)+"-"+str(pp+dp)+"\)S[0-9]+N"+str(N)+"Z"+str(zas)+".aux",x):
+    if re.match("DP_L[0-9]+T[0-9]+P\("+str(pp)+"-"+str(pp+dp)+"\)S[0-9]+.txtaux",x):
         BB.append(x)
 
 L=[]
@@ -64,26 +64,13 @@ C=np.array(C)
 
 for ii in range(len(L)):
     ## This part of the code creates the image for the percolation:
-    File=pd.read_csv("./graph4/DP_L"+str(L[ii])+"T"+str(t[ii])+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites[ii])+"N"+str(N)+"Z"+str(zas)+".aux",delim_whitespace=True,header=None)
+    File=pd.read_csv("./DP_L"+str(L[ii])+"T"+str(t[ii])+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites[ii])+".txtaux",delim_whitespace=True,header=None)
     print(A[ii,:])
     A[:,ii]=File[0]
     B[:,ii]=File[1]
     #Principal Components
     #N is the number of repetitions
     #int(m/N) is the number of points with different probability
-
-plt.figure(figsize=(8,6))
-plt.title(r"$|PC_1|\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
-plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
-plt.ylabel(r"$|PC_1|$",fontsize=14)
-plt.yscale("log")
-for l in range(num_l):
-    plt.errorbar(C,A[:,l],yerr=B[:,l],label=r"$|PC_1\;L="+str(L[l])+"|$")
-    plt.plot(C,A[:,l],color="black") 
-
-plt.legend()
-plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC1.pdf")
-
 ###Regression for the calculation of the minimum:
 
 Npoints=2
@@ -100,8 +87,8 @@ plt.yscale("log")
 
 for i in range(len(L)):
 
-    cs=splrep(C[minimums[i]-3:minimums[i]+3],A[minimums[i]-3:minimums[i]+3,i],s=1)
-    X=np.arange(C[minimums[i]-2],C[minimums[i]+2],zas/100)
+    cs=splrep(C[minimums[i]-neighbors:minimums[i]+neighbors],A[minimums[i]-neighbors:minimums[i]+neighbors,i],s=float(arg[6]))
+    X=np.arange(C[minimums[i]-neighbors],C[minimums[i]+neighbors],zas/100)
     Y=splev(X,cs)
     minimum=X[Y.argmin()]
     minis[i]=minimum
@@ -111,15 +98,9 @@ for i in range(len(L)):
     plt.plot()
 
 plt.legend()
-plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PCaux.pdf")
+plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PCaux.pdf")
 
 Linv=[1/l for l in L]
-
-
-
-
-
-
 
 x=np.array(Linv).reshape((-1,1))
 zet=np.array(minis)
@@ -130,7 +111,7 @@ plt.ylabel(r"$|P_{c}|$",fontsize=14)
 plt.scatter(Linv,minis)
 plt.plot(x,Result[0]+x*Result[2],label=r"$\P_c \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
 plt.legend()
-plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
+plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
 
 
 

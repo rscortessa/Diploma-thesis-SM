@@ -37,12 +37,15 @@ scaler=StandardScaler()
 # It is created the arrays to store the information
 
 S=[0 for i in range(waw)]
+L1=[0 for i in range(waw)]
+L12=[0 for i in range(waw)]
 P=np.array([pp+za*i for i in range(waw)])
 
 lamb=[]
 
 F=np.array([0.6,0.7,0.8,0.9])
 Id=[[0 for jj in range(waw)] for i in F]
+
 
 for yy in range(waw): #Loop over all diferent points 
     A=pd.read_csv("./graph5/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,skiprows=yy*N,nrows=N)
@@ -59,6 +62,8 @@ for yy in range(waw): #Loop over all diferent points
     #The following code computes the intrinsic dimension:
      #First, the variables are initialized:
     lamb.sort()
+    L1[yy]=lamb[0]
+    L12[yy]=lamb[0]-lamb[1]
     #For each probability and F value, the intrinsic dimension is calculated:
     for ff in range(len(F)):
         sum=0
@@ -83,6 +88,27 @@ plt.plot(P,S,color="black")
 plt.legend()
 plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
 write_text(np.array([P,S]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.txt")
+
+
+
+#It is plotted the first component:
+
+plt.figure(figsize=(8,6))
+plt.title(r"$S(p)\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
+plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
+plt.ylabel(r"$\lambda_1\;S(p)$",fontsize=14)
+plt.scatter(P,L1,label=r"$\lambda_1$")
+plt.plot(P,L1,color="black")
+plt.scatter(P,L12,label=r"$\lambda_1-lambda_2$")
+plt.plot(P,L12,color="black")
+plt.legend()
+plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"L1.pdf")
+write_text(np.array([P,L1]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"L1.txt")
+
+
+
+
+
 
 #It is calculated the derivative of the entropy and it is plotted as well:
 

@@ -36,3 +36,6 @@
 
 # Auto-Saved files
 *~
+*.png
+*.pdf
+*.aux

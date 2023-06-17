@@ -43,4 +43,4 @@ for j in range(num):
         A[0][j]=np.mean(D)
         A[1][j]=np.std(D)/np.sqrt(N)
 
-write_text(np.array(A),filename+"aux")
+write_text(np.array(A),"./graph4/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+"N"+str(N)+"Z"+str(zas)+".aux")
