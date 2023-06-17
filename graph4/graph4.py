@@ -5,6 +5,7 @@ import matplotlib.colors as cl
 import sys
 import os
 import re
+import statsmodels.api as sm
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
@@ -30,6 +31,7 @@ allsys=int(arg[5]); system=["Equilibrium","Total\;system"]
 m=dp/zas*N
 A=os.listdir("./graph4/")
 B=[]
+
 for x in A:
     print(x)
     if re.match("DP_L[0-9]+T[0-9]+P\("+str(pp)+"-"+str(pp+dp)+"\)S[0-9]+.txt",x):
@@ -89,7 +91,7 @@ print(A,B,C)
 
 
 plt.figure(figsize=(8,6))
-plt.title(r"$|PC_1|\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
+plt.title(r"$|PC_1|\; vs \;"+"p$"+"\n $for \;different\; sizes\; (L) "+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$|PC_1|$",fontsize=14)
 plt.yscale("log")
@@ -98,19 +100,23 @@ for l in range(num_l):
     plt.plot(C,A[:,l],color="black") 
 
 plt.legend()
-plt.savefig("./graph4/"+str[allsys]+"PC1.pdf")
-
+plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC1.pdf")
 
 ###Regression for the calculation of the minimum:
 
-minis=[min(A[;,x])  for x in range(len(L))]
+minis=[ C[A[:,x].argmin()]  for x in range(len(L))]
 Linv=[1/l for l in L]
 
 x=np.array(Linv).reshape((-1,1))
 zet=np.array(minis)
 Result=LinearR2(x,zet)
+plt.figure(figsize=(8,6))
+plt.xlabel(r"$1/L$",fontsize=14)
+plt.ylabel(r"$|P_{c}|$",fontsize=14)
 plt.scatter(Linv,minis)
-plt.plot(x,Result[0]+x*Result[2],label=r"$\P_c \approx"+str(round(Result[2],3))+"\pm"+str(round(Result[3],5))+"$")
+#plt.plot(x,Result[0]+x*Result[2],label=r"$\P_c \approx"+str(round(Result[2],3))+"\pm"+str(round(Result[3],5))+"$")
+plt.legend()
+plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
 
 
 

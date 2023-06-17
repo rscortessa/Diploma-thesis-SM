@@ -8,6 +8,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 import math
 
+def write_text(A,filename):
+    if(len(A))>0:
+        C=open(filename,"w")
+        for ii in range(len(A[0,:])):
+            C.write(" ".join(map(str,A[:,ii]))+str("\n"))
+            
+
 ##The file has to be loaded:
 
 arg=sys.argv # Arguments giving by console.
@@ -75,7 +82,7 @@ plt.scatter(P,S,label="Entropy")
 plt.plot(P,S,color="black")
 plt.legend()
 plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
-
+write_text(np.array([P,S]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.txt")
 
 #It is calculated the derivative of the entropy and it is plotted as well:
 
@@ -89,6 +96,7 @@ plt.scatter(P[1:]-za/2.0,ds,label=r"$\frac{dS}{dP}$")
 plt.plot(P[1:]-za/2.0,ds,color="black")
 plt.legend()
 plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.pdf")
+write_text(np.array([P[1:]-za/2.0,ds]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.txt")
 
 
 
@@ -104,6 +112,13 @@ for ff in range(len(F)):
     plt.plot(P,Id[ff,:])
 plt.legend()
 plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"ID.pdf")
+SS=[]
+for ff in range(-1,len(F)):
+    if ff==-1:
+        SS.append(P)
+    else:
+        SS.append(Id[ff,:])
+write_text(np.array(SS),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"ID.txt")
 
 
 

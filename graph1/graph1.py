@@ -36,8 +36,8 @@ for i in range(3):
     if i==1:
         x=np.array(eps[1:]).reshape((-1,1))
         zet=np.array(zet)
-        #Result=LinearR2(np.log(x),np.log(zet[1:]))
-        #plt.plot(x,np.e**(Result[0])*x**(Result[2]),label=r"$\rho=A*t^{\delta}$"+"\n" +"$\delta="+str(round(Result[2],3))+"\pm"+str(round(Result[3],5))+"$")
+        Result=LinearR2(np.log(x),np.log(zet[1:]))
+        plt.plot(x,np.e**(Result[0])*x**(Result[2]),label=r"$\rho=A*t^{\delta}$"+"\n" +"$\delta="+str(round(Result[2],3))+"\pm"+str(round(Result[3],5))+"$")
 plt.tight_layout()
 plt.legend()
 plt.savefig("./graph1/L"+str(L)+"T"+str(t)+"graph1.png")

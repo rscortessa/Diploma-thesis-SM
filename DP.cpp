@@ -15,7 +15,7 @@ int main(int argc,char* argv[])
   name2=dir+"DP_OP_L"+std::to_string(L)+"T"+std::to_string(t)+"P"+std::to_string(pp)+"S"+std::to_string(sites)+".txt";
   std::ofstream file1(name1), file2(name2);
   
-  aux=initcond(L,e2,sites); // Initialize the first srtup 
+  aux=initcond(L,e2,sites); // Initialize the first setup 
   for(int l=0;l<N;l++) // for between different samples
     {
       RANDOM // initialize the distribution with a different seed
