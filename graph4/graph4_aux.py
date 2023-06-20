@@ -9,6 +9,7 @@ import statsmodels.api as sm
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from scipy.interpolate import splev,splrep
+from sklearn.preprocessing import PolynomialFeatures
 
 
 
@@ -86,10 +87,7 @@ plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC1
 
 ###Regression for the calculation of the minimum:
 
-Npoints=2
 minis=[0 for i in range(len(L))]
-minimums=[ A[:,x].argmin()  for x in range(len(L))]
-
 
 
 plt.figure(figsize=(8,6))
@@ -98,13 +96,20 @@ plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$|PC_1|$",fontsize=14)
 plt.yscale("log")
 
-for i in range(len(L)):
 
-    cs=splrep(C[minimums[i]-3:minimums[i]+3],A[minimums[i]-3:minimums[i]+3,i],s=1)
-    X=np.arange(C[minimums[i]-2],C[minimums[i]+2],zas/100)
-    Y=splev(X,cs)
-    minimum=X[Y.argmin()]
-    minis[i]=minimum
+for i in range(len(L)):
+    X=[]
+    Y=[]
+    for ii in range(len(C)):
+        if C[ii]>=6200 and C[ii]<=6800:
+            X.append(C[ii])
+            Y.append(A[ii,i])
+    mymodel=np.poly1d(np.polyfit(X,Y,2))
+    X=np.arange(6200,6800,1)
+    Y=mymodel(X)
+    jj=np.where(Y == Y.min())[0][0]
+    minis[i]=X[jj]
+    
     plt.plot(X,Y)
     plt.errorbar(C,A[:,i],yerr=B[:,i],label=r"$|PC_1\;L="+str(L[i])+"|$")
     plt.plot(C,A[:,i],color="black") 

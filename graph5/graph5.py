@@ -6,6 +6,12 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import sys
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+import scipy.interpolate as ssc
+from scipy.interpolate import splev,splrep
+from scipy.interpolate import make_smoothing_spline
+from scipy.interpolate import make_lsq_spline
+from sklearn.preprocessing import PolynomialFeatures
+
 import math
 
 def write_text(A,filename):
@@ -28,6 +34,7 @@ za=int(arg[7]) # Increment in the probability for each cycle x 10.000.
 m=math.floor(dp/za)*N; print("This is m",m) # Number of points of rows of the data. 
 waw=int(m/N) # Number of points in the p-axis
 allsys=int(arg[8])
+smooth=int(arg[9])
 system=["Equilibrium","Total\;system"]
 #Create the scale:
 scaler=StandardScaler()
@@ -61,7 +68,7 @@ for yy in range(waw): #Loop over all diferent points
     S[yy]=np.sum(sing)/np.log(len(pca.singular_values_))
     #The following code computes the intrinsic dimension:
      #First, the variables are initialized:
-    lamb.sort()
+    lamb.sort(reverse=True)
     L1[yy]=lamb[0]
     L12[yy]=lamb[0]-lamb[1]
     #For each probability and F value, the intrinsic dimension is calculated:
@@ -78,6 +85,10 @@ Id=np.array(Id)
         
 
 #It is plotted the entropy:
+X=np.arange(P[0],P[len(P)-1],za/1000)
+mymodel=np.poly1d(np.polyfit(P,S,smooth))
+Y=mymodel(X)
+DY=mymodel.deriv(m=1)
 
 plt.figure(figsize=(8,6))
 plt.title(r"$S(p)\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
@@ -85,6 +96,8 @@ plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$Entropy\;S(p)$",fontsize=14)
 plt.scatter(P,S,label="Entropy")
 plt.plot(P,S,color="black")
+plt.plot(X,Y,color="red",label="interpolation")
+
 plt.legend()
 plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
 write_text(np.array([P,S]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.txt")
@@ -94,12 +107,12 @@ write_text(np.array([P,S]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+st
 #It is plotted the first component:
 
 plt.figure(figsize=(8,6))
-plt.title(r"$S(p)\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
+plt.title(r"$\lambda s\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
-plt.ylabel(r"$\lambda_1\;S(p)$",fontsize=14)
+plt.ylabel(r"$\lambda_1\; ,\lambda_1-\lambda_2$",fontsize=14)
 plt.scatter(P,L1,label=r"$\lambda_1$")
 plt.plot(P,L1,color="black")
-plt.scatter(P,L12,label=r"$\lambda_1-lambda_2$")
+plt.scatter(P,L12,label=r"$\lambda_1-\lambda_2$")
 plt.plot(P,L12,color="black")
 plt.legend()
 plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"L1.pdf")
@@ -112,17 +125,34 @@ write_text(np.array([P,L1]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+s
 
 #It is calculated the derivative of the entropy and it is plotted as well:
 
-ds=[(S[i]-S[i-1])/za for i in range(1,waw)]
-
+ds=DY(X)
+maxi=0
+ii=0
+for x in range(len(ds)):
+    if X[x]>=6200 and X[x]<=6600:
+        if maxi<ds[x]:
+            maxi=ds[x]
+            ii=x
+            
 plt.figure(figsize=(8,6))
-plt.title(r"$\frac{dS(p)}{dp}\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
+plt.title(r"$dS/dp \; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$\frac{dS(p)}{dp}$",fontsize=14)
-plt.scatter(P[1:]-za/2.0,ds,label=r"$\frac{dS}{dP}$")
-plt.plot(P[1:]-za/2.0,ds,color="black")
+plt.scatter(X,ds,label=r"$\frac{dS}{dP}$")
+plt.plot(X,ds,color="black")
+plt.axvline(x=6447,label=r"$p_c=$"+"6447"+r"$ \times 10^{-3}$")
+plt.axvline(x=X[ii],linestyle="dashed",label=r"$p_{c_{exp}}=$"+str(int(X[ii]))+r"$ \times 10^{-3}$")
 plt.legend()
 plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.pdf")
-write_text(np.array([P[1:]-za/2.0,ds]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.txt")
+write_text(np.array([X,ds]),"./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.txt")
+
+
+
+
+
+
+
+
 
 
 
