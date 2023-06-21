@@ -96,25 +96,29 @@ plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$|PC_1|$",fontsize=14)
 plt.yscale("log")
 
-
+PI=5000
+PF=7000
 for i in range(len(L)):
     X=[]
     Y=[]
     for ii in range(len(C)):
-        if C[ii]>=6200 and C[ii]<=6800:
+        if C[ii]>=PI and C[ii]<=PF:
             X.append(C[ii])
             Y.append(A[ii,i])
-    mymodel=np.poly1d(np.polyfit(X,Y,2))
-    X=np.arange(6200,6800,1)
-    Y=mymodel(X)
+    sp1=splrep(X,Y)
+    X=np.linspace(PI,PF,2000)
+    Y=splev(X,sp1)
+#    mymodel=np.poly1d(np.polyfit(X,Y,9))
+#    X=np.arange(PI,PF,1)
+#    Y=mymodel(X)
     jj=np.where(Y == Y.min())[0][0]
     minis[i]=X[jj]
-    
     plt.plot(X,Y)
     plt.errorbar(C,A[:,i],yerr=B[:,i],label=r"$|PC_1\;L="+str(L[i])+"|$")
     plt.plot(C,A[:,i],color="black") 
     plt.plot()
 
+plt.axvline(x=6447, color="b",label="P_c")
 plt.legend()
 plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PCaux.pdf")
 
@@ -133,7 +137,7 @@ plt.figure(figsize=(8,6))
 plt.xlabel(r"$1/L$",fontsize=14)
 plt.ylabel(r"$|P_{c}|$",fontsize=14)
 plt.scatter(Linv,minis)
-plt.plot(x,Result[0]+x*Result[2],label=r"$\P_c \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
+plt.plot(x,Result[0]+x*Result[2],label=r"$P_c \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
 plt.legend()
 plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
 
