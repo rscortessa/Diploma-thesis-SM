@@ -108,9 +108,9 @@ for i in range(len(L)):
     sp1=splrep(X,Y)
     X=np.linspace(PI,PF,2000)
     Y=splev(X,sp1)
-#    mymodel=np.poly1d(np.polyfit(X,Y,9))
-#    X=np.arange(PI,PF,1)
-#    Y=mymodel(X)
+    mymodel=np.poly1d(np.polyfit(X,Y,9))
+    X=np.arange(PI,PF,1)
+    Y=mymodel(X)
     jj=np.where(Y == Y.min())[0][0]
     minis[i]=X[jj]
     plt.plot(X,Y)
