@@ -28,12 +28,12 @@ DP_L%.txt: PCA.x
 		./PCA.x $(subst S, ,$(subst .txt, ,$(subst P, ,$(subst T, ,$(subst DP_L, ,$@))))) $(dp) $(N) $(dir) $(z) $(allsys); \
 	fi
 
-starting=OP_
+starting=_OP_
 pnumbers= 5000 6000 7000 
 pvalues=$(addprefix p_,$(pnumbers))
 varyp:$(pvalues)
 $(pvalues):
-	$(MAKE) DP_$(starting)L$(L)T$(t)P$(@:p_%=%)S$(sites).txt
+	$(MAKE) DP$(starting)L$(L)T$(t)P$(@:p_%=%)S$(sites).txt
 
 lnumbers= 16 20 24 28 32 36
 lvalues=$(addprefix l_,$(lnumbers))
@@ -42,13 +42,13 @@ $(lvalues):
 	$(MAKE) DP_L$(@:l_%=%)T$(shell echo "scale=0; (sqrt($(@:l_%=%))*$(@:l_%=%))*50/(10*sqrt(10))" | bc)P$(pp)S$(@:l_%=%).txt 
 
 
-starting=OP_
+starting=_OP_
 snumbers= 100 200 300
 svalues=$(addprefix s_,$(snumbers))
 
 varys:$(svalues)
 $(svalues):
-	$(MAKE) DP_$(starting)L$(L)T$(t)P$(pp)S$(@:s_%=%).txt 
+	$(MAKE) DP$(starting)L$(L)T$(t)P$(pp)S$(@:s_%=%).txt 
 
 
 

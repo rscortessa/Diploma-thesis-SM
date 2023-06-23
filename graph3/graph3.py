@@ -7,6 +7,15 @@ import sys
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 import math
+
+def write_text(A,filename):
+    if(len(A))>0:
+        C=open(filename,"w")
+        for ii in range(len(A[0,:])):
+            C.write(" ".join(map(str,A[:,ii]))+str("\n"))
+
+
+
 arg=sys.argv
 
 L=int(arg[1])
@@ -55,7 +64,7 @@ plt.legend()
 plt.savefig("./graph3/"+system[allsys]+"Fraction_variance.png")
 
 z=pca.components_
-
+print("It is normalized? Discover, norm=",np.linalg.norm(z[0,:]))
 if allsys ==1:
     q=[i for i in range(t*L)]
 else:
@@ -79,29 +88,17 @@ plt.xlabel(r"$PC_1$",fontsize=14)
 plt.ylabel(r"$PC_2$",fontsize=14)
 plt.legend()
 cbar = plt.colorbar(ax=plt.gca())
-minix=min(x_pca[:,0])
-maxx=max(x_pca[:,0])
-miniy=min(x_pca[:,1])
-maxy=max(x_pca[:,1])
-xo=minix+(maxx-minix)/10.0
-yo=miniy+(maxy-miniy)/10.0
-dx=(maxx-minix)/10.0
-dy=(maxy-miniy)/10.0
-#inset_axes=inset_axes(plt.gca(),width="30%",height="30%",loc="upper center")
-#inset_axes.scatter(x_pca[:,0],x_pca[:,1],s=1,c=np.array([pp+za*int(i/N) for i in range(int(m))]),cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
-#inset_axes.set_xlim([-20,50])
-#inset_axes.set_ylim([-20,20])
 cbar.ax.set_title(r'$Probability \times 10^{3}$', fontsize=12)
 cbar.ax.tick_params(labelsize=10)
-
 plt.savefig("./graph3/"+system[allsys]+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+"PCA.pdf")
 
 
+PP=np.array([pp+za*int(i/N) for i in range(int(m))])
 
 plt.figure(figsize=(8,6))
 plt.title(r"$Projection\; of\; the \; DATA \;set\; in\; the\; first\; PC$"+"\n"
          +"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
-plt.scatter(np.array([pp+za*int(i/N) for i in range(int(m))]),x_pca[:,0],s=1,cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
+plt.scatter(PP,x_pca[:,0],s=1,cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
 plt.xlabel(r"$Probability \; p$",fontsize=14)
 plt.ylabel(r"$PC_1$",fontsize=14)
 plt.legend()
@@ -154,5 +151,7 @@ for l in range(num_pca):
     plt.errorbar(C,A[:,l],yerr=B[:,l],label=r"$|PCA_"+str(l+1)+"|$")
     plt.plot(C,A[:,l],color="black") 
     plt.legend()
-    plt.savefig("./graph3/"+system[allsys]+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"PCs.pdf")
+plt.savefig("./graph3/"+system[allsys]+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"PCs.pdf")
+
+write_text(np.array([C,A[:,0],B[:,0]]),"./graph3/"+system[allsys]+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(za)+"Z"+str(N)+"N"+"PC1.txt")
 

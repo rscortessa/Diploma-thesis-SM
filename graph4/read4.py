@@ -22,16 +22,17 @@ N=int(arg[3])
 zas=int(arg[4])
 L=int(arg[5])
 t=int(arg[6])
+howmuch=int(arg[7])
 m=dp/zas*N
 num=int(m/N)
 
 filename="./graph4/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+".txt"
 
-File=pd.read_csv(filename,delim_whitespace=True,header=None,dtype=bool)
+File=pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8)
 scaler=StandardScaler()
 scaler.fit(File)
 scaled_data=scaler.transform(File)
-pca=PCA()
+pca=PCA(n_components=1)
 pca.fit(scaled_data)
 x_pca=pca.transform(scaled_data)
 pca_L=x_pca[:,0]
@@ -43,4 +44,4 @@ for j in range(num):
         A[0][j]=np.mean(D)
         A[1][j]=np.std(D)/np.sqrt(N)
 
-write_text(np.array(A),"./graph4/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+"N"+str(N)+"Z"+str(zas)+".aux")
+write_text(np.array(A),"./graph4/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+"N"+str(N)+"Z"+str(zas)+".aux"+str(howmuch))

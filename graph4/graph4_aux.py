@@ -66,7 +66,7 @@ C=np.array(C)
 for ii in range(len(L)):
     ## This part of the code creates the image for the percolation:
     File=pd.read_csv("./graph4/DP_L"+str(L[ii])+"T"+str(t[ii])+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites[ii])+"N"+str(N)+"Z"+str(zas)+".aux",delim_whitespace=True,header=None)
-    print(A[ii,:])
+    print(A[ii,:],"----",File[0])
     A[:,ii]=File[0]
     B[:,ii]=File[1]
     #Principal Components
@@ -96,8 +96,8 @@ plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$|PC_1|$",fontsize=14)
 plt.yscale("log")
 
-PI=5000
-PF=7000
+PI=pp
+PF=pp+dp
 for i in range(len(L)):
     X=[]
     Y=[]
