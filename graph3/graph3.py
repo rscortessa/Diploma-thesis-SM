@@ -65,7 +65,7 @@ plt.legend()
 plt.savefig("./graph3/"+system[allsys]+"Fraction_variance.png")
 
 z=pca.components_
-print("It is normalized? Discover, norm=",np.linalg.norm(z[0,:]))
+
 if allsys ==1:
     q=[i for i in range(t*L)]
 else:
@@ -79,7 +79,6 @@ plt.legend()
 plt.savefig("./graph3/"+system[allsys]+"L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"PCA1_proy.png")
 
 
-print(len(x_pca[:,1])/N,"Let's see",dp,m*za/N)
 
 plt.figure(figsize=(8,6))
 plt.title(r"$Projection\; of\; the \; DATA \;set\; in\; the\; two \; first\; PCs$"+"\n"
