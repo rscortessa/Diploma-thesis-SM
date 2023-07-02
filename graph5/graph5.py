@@ -52,7 +52,7 @@ lamb=[]
 
 F=np.array([0.6,0.7,0.8,0.9])
 Id=[[0 for jj in range(waw)] for i in F]
-
+Id_PCA=[0 for jj in range(waw)]
 
 for yy in range(waw): #Loop over all diferent points 
     A=pd.read_csv("./graph5/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,skiprows=yy*N,nrows=N)
@@ -71,6 +71,7 @@ for yy in range(waw): #Loop over all diferent points
     lamb.sort(reverse=True)
     L1[yy]=lamb[0]
     L12[yy]=lamb[0]-lamb[1]
+    Id_PCA[yy]=pca.n_components_
     #For each probability and F value, the intrinsic dimension is calculated:
     for ff in range(len(F)):
         sum=0
@@ -166,6 +167,8 @@ plt.ylabel(r"$I_d\; Intrinsic\; Dimension$",fontsize=14)
 for ff in range(len(F)):
     plt.scatter(P,Id[ff,:],label=r"$F="+str(F[ff])+"$")
     plt.plot(P,Id[ff,:])
+
+plt.scatter(P,Id_PCA,label=r"$PCA\;Analysis$")
 plt.legend()
 plt.savefig("./graph5/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"ID.pdf")
 SS=[]
