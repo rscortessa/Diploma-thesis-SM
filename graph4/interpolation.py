@@ -21,6 +21,11 @@ def LinearR2(col_1, col_2):
     COEF =  np.array(COEF)
     return COEF
 
+def write_text(A,filename):
+    if(len(A))>0:
+        C=open(filename,"w")
+        for ii in range(len(A[0,:])):
+            C.write(" ".join(map(str,A[:,ii]))+str("\n"))
 
 
 
@@ -44,8 +49,10 @@ for x in AA:
 L=[]
 t=[]
 sites=[]
+print(BB)
 for x in BB:
     CC=re.findall(r"[0-9]+",x)
+    print(CC)
     L.append(int(CC[0]))
     t.append(int(CC[1]))
     sites.append(int(CC[4]))
@@ -76,14 +83,14 @@ for ii in range(len(L)):
     #int(m/N) is the number of points with different probability
 
 plt.figure(figsize=(8,6))
-plt.title(r"$|PC_1|\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
+plt.title(r"$ \langle P_1 \rangle \; vs \;"+"p$"+"\n $for \;different\; sizes\; (L)\; "+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
-plt.ylabel(r"$|PC_1|$",fontsize=14)
+plt.ylabel(r"$\langle P_1 \rangle$",fontsize=14)
 plt.yscale("log")
 for l in range(num_l):
-    plt.errorbar(C,A[:,l],yerr=B[:,l],label=r"$|PC_1\;L="+str(L[l])+"|$")
+    plt.errorbar(C,A[:,l],yerr=B[:,l],label=r"$ \langle P_1 \rangle \;L="+str(L[l])+"$")
     plt.plot(C,A[:,l],color="black") 
-
+plt.axvline(x=6447, color="b",label="$p_c$")
 plt.legend()
 plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC1.pdf")
 
@@ -93,9 +100,9 @@ minis=[0 for i in range(len(L))]
 
 
 plt.figure(figsize=(8,6))
-plt.title(r"$|PC_1|\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
+plt.title(r"$\langle P_1 \rangle\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
-plt.ylabel(r"$|PC_1|$",fontsize=14)
+plt.ylabel(r"$\langle P_1 \rangle $",fontsize=14)
 plt.yscale("log")
 
 #PI=5000
@@ -110,39 +117,55 @@ for i in range(len(L)):
     sp1=splrep(X,Y)
     X=np.linspace(PI,PF,2000)
     Y=splev(X,sp1)
-    mymodel=np.poly1d(np.polyfit(X,Y,ww))
+    fitting,cov=np.polyfit(X,Y,ww,full=False,cov=True)
+    mymodel=np.poly1d(fitting)
     X=np.arange(PI,PF,1)
     Y=mymodel(X)
     jj=np.where(Y == Y.min())[0][0]
     minis[i]=X[jj]
     plt.plot(X,Y)
-    plt.errorbar(C,A[:,i],yerr=B[:,i],label=r"$|PC_1\;L="+str(L[i])+"|$")
+    plt.errorbar(C,A[:,i],yerr=B[:,i],label=r"$\langle P_1\rangle \;L="+str(L[i])+"$")
     plt.plot(C,A[:,i],color="black") 
     plt.plot()
 
-plt.axvline(x=6447, color="b",label="P_c")
+plt.axvline(x=6447, color="b",label="$p_c$")
 plt.legend()
 plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PCaux.pdf")
 
+
 Linv=[1/l for l in L]
+Linv.reverse()
+minis.reverse()
+Linv=np.array(Linv)
+zet=np.array(minis)
 
-
-
-
-
-
+sp1=splrep(Linv,zet)
+X=np.linspace(min(Linv),max(Linv),200)
+Y=splev(X,sp1)
+fitting,cov=np.polyfit(X,Y,2,full=False,cov=True)
+mymodel=np.poly1d(fitting)
+Y=mymodel(X)
+print(mymodel)
+Yo=mymodel([0])[0]
+print(cov)
+dyo=np.sqrt(cov[0][0])
 
 x=np.array(Linv).reshape((-1,1))
-zet=np.array(minis)
 Result=LinearR2(x,zet)
 plt.figure(figsize=(8,6))
+plt.title(r"$Finite\;size\;scaling\;of\;the\;minimum\;of\;\langle P_1 \rangle\;$",fontsize=14)
 plt.xlabel(r"$1/L$",fontsize=14)
-plt.ylabel(r"$|P_{c}|$",fontsize=14)
+plt.ylabel(r"$p_{c}$",fontsize=14)
+#plt.xscale("log")
+plt.xlim([min(Linv)-0.001,max(Linv)+0.001])
 plt.scatter(Linv,minis)
-plt.plot(x,Result[0]+x*Result[2],label=r"$P_c \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
+plt.plot(x,Result[0]+x*Result[2],label=r"$p_c \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
+#plt.plot(X,Y,label=r"$p_c \approx"+str(round(Yo,3))+"\pm"+str(round(dyo,3))+"$")
+
 plt.legend()
 plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
 
+write_text(np.array([Linv,zet]),"./Qtiplot"+".aux")
 
 
 

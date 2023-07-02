@@ -7,6 +7,7 @@ if [ $# -eq 0 ];then
        dp=40
        z=2
        N=200
+       batch=$N
        else
        L=$1
        t=$( echo "scale=0; (sqrt($L)*$L)" | bc)
@@ -15,6 +16,7 @@ if [ $# -eq 0 ];then
        z=$5
        N=$6
        allsys=$7
+       batch=$8
        fi
 make "DP_L${L}T${t}P${pp}S${L}.txt"  dp=$dp z=$z  dir="./graph3/" N=$N allsys=$allsys    
-python3 ./graph3/graph3.py $L $t $pp $dp $L $N $z $allsys
+python3 ./graph3/graph3.py $L $t $pp $dp $L $N $z $allsys $batch

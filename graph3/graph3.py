@@ -4,8 +4,11 @@ import numpy as np
 import matplotlib.colors as cl
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import sys
+import gc
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from sklearn.decomposition import IncrementalPCA
+
 import math
 
 def write_text(A,filename):
@@ -31,25 +34,23 @@ print("This is m",m)
 
 allsys=int(arg[8])
 system=["Equilibrium","Total\;system"]
+batch_sizes=int(arg[9])
 ## This part of the code creates the image for the percolation:
-#A=pd.read_csv("DP_L"+sys.argv[1]+"T"+sys.argv[2]+"P"+sys.argv[3]+"S"+sys.argv[4]+"data.txt",delim_whitespace=True,header=None)
-A=pd.read_csv("./graph3/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None)
-print(A)
 
 
-
+A=pd.read_csv("./graph3/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,dtype=np.uint8)
+A.info(memory_usage="deep")
 
 scaler=StandardScaler()
 scaler.fit(A)
 scaled_data=scaler.transform(A)
+pca=IncrementalPCA(batch_size=batch_sizes)
 
-
-
-
-pca=PCA()
 pca.fit(scaled_data)
 x_pca=pca.transform(scaled_data)
-
+#del A
+#del scaled_data
+#gc.collect()
 
 y=pca.explained_variance_ratio_
 sing=pca.singular_values_

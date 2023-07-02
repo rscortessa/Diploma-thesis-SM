@@ -1,18 +1,22 @@
 #!bin/bash
-L="$1 $2 $3 $4"
-pp=$5
-dp=$6
-N=$8
-z=$7
-allsys=$9
-howmuch=${10}
+L=""
+for ((i=8; i<=$#;i++)); do
+    L+=" ${!i}"
+done
 
+pp=$1
+dp=$2
+z=$3
+N=$4
+allsys=$5
+howmuch=$6
+cols=$7
 for jj in $(seq 1 1 $howmuch)
 do
-    make varyl dir=./graph4/ starting=OP_ lnumbers="$1 $2 $3 $4" N=$N pp=$pp dp=$dp z=$z allsys=$9 -j6
+    make varyl dir=./graph4/ starting=OP_ lnumbers="$L" N=$N pp=$pp dp=$dp z=$z allsys=$allsys -j6
     for i in $L
     do
-	python3 ./graph4/read4.py $pp $dp $N $z $i $( echo "scale=0; ((sqrt($i)*$i*50)/(10*sqrt(10)))" | bc) $jj; echo "$i" &
+	python3 ./graph4/read4.py $pp $dp $N $z $i $( echo "scale=0; ((sqrt($i)*$i*50)/(10*sqrt(10)))" | bc) $jj $cols; echo "$i" &
     done    
     rm ./graph4/*.txt
 done
