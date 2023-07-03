@@ -13,7 +13,7 @@ howmuch=$6
 cols=$7
 for jj in $(seq 1 1 $howmuch)
 do
-    make varyl dir=./graph4/ starting=OP_ lnumbers="$L" N=$N pp=$pp dp=$dp z=$z allsys=$allsys -j6
+    make varyl dir=./graph4/ starting=_ lnumbers="$L" N=$N pp=$pp dp=$dp z=$z allsys=$allsys -j6
     for i in $L
     do
 	python3 ./graph4/read4.py $pp $dp $N $z $i $( echo "scale=0; ((sqrt($i)*$i*50)/(10*sqrt(10)))" | bc) $jj $cols; echo "$i" &

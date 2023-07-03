@@ -11,7 +11,6 @@ from scipy.interpolate import splev,splrep
 from scipy.interpolate import make_smoothing_spline
 from scipy.interpolate import make_lsq_spline
 from sklearn.preprocessing import PolynomialFeatures
-
 import math
 
 def write_text(A,filename):

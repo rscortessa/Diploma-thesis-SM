@@ -10,7 +10,7 @@ if [ $# -eq 0 ];then
        batch=$N
        else
        L=$1
-       t=$( echo "scale=0; (sqrt($L)*$L)" | bc)
+       t=$2
        pp=$3
        dp=$4
        z=$5
