@@ -17,4 +17,4 @@ do
     python3 ./graph9/compute_id.py $i $( echo "scale=0; ((sqrt($i)*$i*50)/(10*sqrt(10)))" | bc) $pp $dp $i $N $z $allsys  $smooth; echo "$i" &
 done    
 
-python3 ./graph9/size_scaling_id.py $pp $dp $N $allsys
+#python3 ./graph9/size_scaling_id.py $pp $dp $N $allsys

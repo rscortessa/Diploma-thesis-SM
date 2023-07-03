@@ -16,14 +16,14 @@ do
     make varyl dir=./graph4/ starting=_ lnumbers="$L" N=$N pp=$pp dp=$dp z=$z allsys=$allsys -j6
     for i in $L
     do
-	python3 ./graph4/read4.py $pp $dp $N $z $i $( echo "scale=0; ((sqrt($i)*$i*50)/(10*sqrt(10)))" | bc) $jj $cols; echo "$i" &
+	python3 ./graph4/read4.py $pp $dp $N $z $i $( echo "scale=0; ((sqrt($i)*$i))" | bc) $jj $cols; echo "$i" &
     done    
     rm ./graph4/*.txt
 done
 
 for ll in $L
 do
-    python3 ./graph4/pre_read4.py $ll $( echo "scale=0; ((sqrt($ll)*$ll*50)/(10*sqrt(10)))" | bc) $pp $dp $N $z $allsys
+    python3 ./graph4/pre_read4.py $ll $( echo "scale=0; ((sqrt($ll)*$ll))" | bc) $pp $dp $N $z $allsys
 done
 
 for jj in $(seq 1 1 $howmuch)
