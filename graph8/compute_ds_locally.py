@@ -6,6 +6,8 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import sys
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from sklearn.decomposition import IncrementalPCA
+
 import scipy.interpolate as ssc
 from scipy.interpolate import splev,splrep
 from scipy.interpolate import make_smoothing_spline
@@ -35,6 +37,7 @@ m=math.floor(dp/za)*N; print("This is m",m) # Number of points of rows of the da
 waw=int(m/N) # Number of points in the p-axis
 allsys=int(arg[8])
 smooth=int(arg[9])
+fraction=int(arg[10])
 system=["Equilibrium","Total\;system"]
 #Create the scale:
 scaler=StandardScaler()
@@ -48,14 +51,22 @@ P=np.array([pp+za*i for i in range(waw)])
 
 
 for yy in range(waw): #Loop over all diferent points 
-    A=pd.read_csv("./graph8/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,skiprows=yy*N,nrows=N)
-    scaler.fit(A)
-    scaled_data=scaler.transform(A)
-    del A
-    gc.collect()
-    pca=PCA()
-    pca.fit(scaled_data)
-    x_pca=pca.transform(scaled_data)
+    quantity=int(N/fraction)
+    pca=IncrementalPCA()
+    for pq in range(fraction):
+        print(yy,"1")
+        A=pd.read_csv("./DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,skiprows=yy*N+pq*quantity,nrows=quantity)
+        #scaler.fit(A)
+        #scaled_data=scaler.transform(A)
+        #del A
+        #gc.collect()
+        #pca=PCA()
+        #pca.fit(scaled_data)
+        #x_pca=pca.transform(scaled_data)
+        pca.partial_fit(A)
+        print("yes",pq)
+        del A
+        gc.collect()
     sing=np.array(pca.singular_values_)
     norm=np.sum(sing**2)
     if norm==0:
@@ -64,7 +75,7 @@ for yy in range(waw): #Loop over all diferent points
         sing=sing**2/norm
         sing=-sing*np.log(sing)
         S[yy]=np.sum(sing)/np.log(len(pca.singular_values_))
-    
+    print(yy)
 
 #It is plotted the entropy:
 # We define the points were the derivative is calculated
@@ -94,8 +105,8 @@ plt.scatter(P,S,label="Entropy")
 plt.plot(P,S,color="black")
 plt.plot(X,Y,color="red",label="interpolation")
 plt.legend()
-plt.savefig("./graph8/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
-write_text(np.array([P,S]),"./graph8/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.aux")
+plt.savefig("./"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
+write_text(np.array([P,S]),"./"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.aux")
 
 
 
@@ -110,7 +121,7 @@ for ii in range(len(X)):
         XX.append(X[ii])
         DS.append(ds[ii])
         
-write_text(np.array([XX,DS]),"./graph8/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.aux")
+write_text(np.array([XX,DS]),"./"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.aux")
 
 
 

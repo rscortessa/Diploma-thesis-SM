@@ -28,11 +28,12 @@ std::vector<bool>  initcond(int L,std::mt19937& e2,int N)
 }
 
 
-void evolution(std::vector<bool> &sys,double p,std::uniform_real_distribution<double>& a, std::mt19937& e2, int L)
+int evolution(std::vector<bool> &sys,double p,std::uniform_real_distribution<double>& a, std::mt19937& e2, int L)
 {
   std::vector<bool> copy;
   bool c;
   bool d;
+  int sum=0;
   copy=sys;
   for(int i=1;i<sys.size()+1;i++)
     {
@@ -40,7 +41,9 @@ void evolution(std::vector<bool> &sys,double p,std::uniform_real_distribution<do
       c= (copy[i-1]==1 && a(e2)<=p);
       d= (copy[(i+1)%L]==1 && a(e2)<=p);
       sys[i%L]= (c || d);
+      sum=sum+sys[i%L];
     }
+  return sum;
 }
 
 
