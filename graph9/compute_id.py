@@ -12,6 +12,14 @@ from scipy.interpolate import make_smoothing_spline
 from scipy.interpolate import make_lsq_spline
 from sklearn.preprocessing import PolynomialFeatures
 import math
+import time
+from math import log,sqrt,pow,exp,lgamma,pi
+from sklearn.neighbors import NearestNeighbors
+
+
+
+
+
 
 
 def write_text(A,filename):
@@ -43,7 +51,9 @@ scaler=StandardScaler()
 
 # It is created the arrays to store the information
 
-Id_PCA=[0 for jj in range(waw)]
+F=[0.5,0.55,0.6]
+Id_NB=[0 for jj in range(waw)]
+Id_PCA=[[0 for jj in range(waw)] for coeff in F]
 P=np.array([pp+za*i for i in range(waw)])
 
 
@@ -56,22 +66,40 @@ for yy in range(waw): #Loop over all diferent points
     x_pca=pca.transform(scaled_data)
     sing=np.array(pca.singular_values_)
     sing=sing**2/(np.sum(sing**2))
-    Id_PCA[yy]=pca.n_features_in_
-
+    lamb=[x for x in sing]
+    lamb.sort(reverse=True)
+    for coeff in range(len(F)):
+        suma=0
+        for landa in range(len(lamb)):
+            suma=suma+lamb[landa]
+            if F[coeff]<=suma:
+                Id_PCA[coeff][yy]=landa+1
+                break
+    nbrs = NearestNeighbors(n_neighbors=3, algorithm='ball_tree').fit(A)
+    distances, indices = nbrs.kneighbors(A)
+    Nele=distances.shape[0]
+    dim=Nele/(np.sum(np.log(distances[:,2]/distances[:,1])))
+    Id_NB[yy]=dim
+    
 #It is plotted the Id_PCA:
-X=np.arange(P[0],P[len(P)-1],za/1000)
-mymodel=np.poly1d(np.polyfit(P,Id_PCA,smooth))
-Y=mymodel(X)
-DY=mymodel.deriv(m=1)
-ds=DY(X)
+#X=np.arange(P[0],P[len(P)-1],za/1000)
+#mymodel=np.poly1d(np.polyfit(P,Id_PCA,smooth))
+#Y=mymodel(X)
+#DY=mymodel.deriv(m=1)
+#ds=DY(X)
 
 plt.figure(figsize=(8,6))
 plt.title(r"$S(p)\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$Intrinsic\;dimension\;Id(p)$",fontsize=14)
-plt.scatter(P,Id_PCA,label="Entropy")
-plt.plot(P,Id_PCA,color="black")
-plt.plot(X,Y,color="red",label="interpolation")
+for coeff in range(len(F)):
+    plt.scatter(P,Id_PCA[coeff][:],label="$I_d(PCA)\;\\%="+str(F[coeff])+"$")
+    plt.plot(P,Id_PCA[coeff][:],color="black")
+
+plt.scatter(P,Id_NB,label="$I_d(Neighbors)$")
+plt.plot(P,Id_NB)
+
+#plt.plot(X,Y,color="red",label="interpolation")
 plt.legend()
 plt.savefig("./graph9/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"Id.pdf")
 write_text(np.array([P,Id_PCA]),"./graph9/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"Id.aux")
@@ -82,14 +110,14 @@ write_text(np.array([P,Id_PCA]),"./graph9/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"
 
 
 #It is calculated the derivative of the entropy and it is plotted as well:
-XX=[]
-DS=[]
-for ii in range(len(X)):
-    if X[ii]>=6200 and X[ii]<=6600:
-        XX.append(X[ii])
-        DS.append(ds[ii])
+#XX=[]
+#DS=[]
+#for ii in range(len(X)):
+#    if X[ii]>=6200 and X[ii]<=6600:
+#        XX.append(X[ii])
+#        DS.append(ds[ii])
         
-write_text(np.array([XX,DS]),"./graph9/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DId.aux")
+#write_text(np.array([XX,DS]),"./graph9/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DId.aux")
 
 
 
