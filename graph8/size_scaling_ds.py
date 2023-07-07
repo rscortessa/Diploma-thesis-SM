@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import matplotlib.colors as cl
 import statsmodels.api as sm
 import sys
 import math
@@ -31,6 +30,7 @@ pp=int(arg[1]) # Initial probability x 10.000.
 dp=int(arg[2]) # Change in probability x 10.000.
 N=int(arg[3])
 allsys=int(arg[4])
+fr=float(arg[5])
 system=["Equilibrium","Total\;system"]
 
 AA=os.listdir("./graph8/")
@@ -65,9 +65,11 @@ for ii in range(len(L)):
     jj=np.where(A[1] == A[1].max())[0][0]
     Pc[ii]=A[0][jj]
     plt.scatter(A[0],A[1],label="L="+str(L[ii]))
+    write_text(np.array([A[0],A[1]]),"./graph8/"+str(allsys)+"_L"+str(L[ii])+"T"+str(t[ii])+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.aux"+str(fr))
 
 plt.legend()    
-plt.savefig("./graph8/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"DS.pdf")
+plt.savefig("./graph8/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"DS"+str(fr)+".pdf")
+
 
 x=np.array(Linv).reshape((-1,1))
 Result=LinearR2(x,Pc)
@@ -83,4 +85,5 @@ plt.xlim([min(Linv)-0.001,max(Linv)+0.001])
 plt.scatter(Linv,Pc)
 plt.plot(x,Result[0]+x*Result[2],label=r"$p_c \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
 plt.legend()
-plt.savefig("./graph8/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
+plt.savefig("./graph8/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin"+str(fr)+".pdf")
+write_text(np.array([Linv,Pc]),"./graph8/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.txt"+str(fr))

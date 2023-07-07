@@ -10,10 +10,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.decomposition import IncrementalPCA
 
-import scipy.interpolate as ssc
-from scipy.interpolate import splev,splrep
-from scipy.interpolate import make_smoothing_spline
-from scipy.interpolate import make_lsq_spline
 from sklearn.preprocessing import PolynomialFeatures
 import math
 import gc

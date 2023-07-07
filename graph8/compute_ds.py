@@ -1,15 +1,9 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import matplotlib.colors as cl
-from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import sys
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-import scipy.interpolate as ssc
-from scipy.interpolate import splev,splrep
-from scipy.interpolate import make_smoothing_spline
-from scipy.interpolate import make_lsq_spline
 from sklearn.preprocessing import PolynomialFeatures
 import math
 import gc
@@ -35,6 +29,7 @@ m=math.floor(dp/za)*N; print("This is m",m) # Number of points of rows of the da
 waw=int(m/N) # Number of points in the p-axis
 allsys=int(arg[8])
 smooth=int(arg[9])
+fr=float(arg[10])
 system=["Equilibrium","Total\;system"]
 #Create the scale:
 scaler=StandardScaler()
@@ -46,9 +41,9 @@ scaler=StandardScaler()
 S=[0 for i in range(waw)]
 P=np.array([pp+za*i for i in range(waw)])
 
-
+xx=[i for i in range(int(L*t*fr))]
 for yy in range(waw): #Loop over all diferent points 
-    A=pd.read_csv("./graph8/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,skiprows=yy*N,nrows=N)
+    A=pd.read_csv("./graph8/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,usecols=xx,skiprows=yy*N,nrows=N)
     scaler.fit(A)
     scaled_data=scaler.transform(A)
     del A
