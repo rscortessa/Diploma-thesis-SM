@@ -8,7 +8,6 @@ import re
 import statsmodels.api as sm
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import IncrementalPCA
-from memory_profiler import profile
 import tracemalloc
 
 def write_text(A,filename):

@@ -15,7 +15,7 @@ int main(int argc,char* argv[])
   int pstep=stoi(std::string(argv[8])); // How much the probability increases for each step x 10.000
   double dp=pstep*1.0/(10000);    
   bool totalsystem=std::stoi(std::string(argv[9]));
-  int Numberpics=10;
+  int Numberpics=1;
   
   std::string name;
   name=dir+"DP_L"+std::to_string(L)+"T"+std::to_string(t)+"P("+std::to_string(pp)+"-"+std::to_string(pp+M)+")"+"S"+std::to_string(sites)+".txt";

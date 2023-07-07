@@ -2,16 +2,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import matplotlib.colors as cl
-from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import sys
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.decomposition import IncrementalPCA
-
-import scipy.interpolate as ssc
-from scipy.interpolate import splev,splrep
-from scipy.interpolate import make_smoothing_spline
-from scipy.interpolate import make_lsq_spline
 from sklearn.preprocessing import PolynomialFeatures
 import math
 import gc
