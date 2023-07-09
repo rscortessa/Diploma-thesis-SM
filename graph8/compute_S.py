@@ -9,10 +9,19 @@ import re
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.decomposition import IncrementalPCA
+import statsmodels.api as sm
 
 from sklearn.preprocessing import PolynomialFeatures
 import math
 import gc
+
+def LinearR2(col_1, col_2):
+    col_1 = sm.add_constant(col_1)
+    model = sm.OLS(col_2, col_1)
+    results = model.fit()
+    COEF = [results.params[0], results.bse[0], results.params[1], results.bse[1],results.rsquared]
+    COEF =  np.array(COEF)
+    return COEF
 
 def write_text(A,filename):
     if(len(A))>0:
@@ -111,7 +120,6 @@ plt.savefig("./"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+"
 #It is calculated the derivative of the entropy and it is plotted as well:
 XX=[]
 DS=[[] for i in range(len(L))]
-maxis=[]
 for ii in range(len(X)):
     if X[ii]>=6200 and X[ii]<=6600:
         XX.append(X[ii])
@@ -130,19 +138,31 @@ plt.legend()
 plt.savefig("./"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.pdf")
 
 
-Linv=[1/l for l in L]
+Linv=[]
+for l in L:
+    if l>=40:
+        Linv.append(1/l)
+maxis=[]
 DS=np.array(DS)
-for jj in range(len(L)):
-    mm=np.where(DS[jj] == DS[jj].max())[0][0]
-    maxis.append(XX[mm])
 
+for jj in range(len(L)):
+    if L[jj]>=40:
+        mm=np.where(DS[jj] == DS[jj].max())[0][0]
+        maxis.append(XX[mm])
+
+x=np.array(Linv).reshape((-1,1))
+Result=LinearR2(x,maxis)
+
+    
 plt.figure(figsize=(8,6))
 plt.title(r"$size\;scaling\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
 plt.ylabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.xlabel(r"$L^{-1}$",fontsize=14)
 plt.scatter(Linv,maxis)
+plt.plot(x,Result[0]+x*Result[2],label=r"$p_c \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
+plt.legend()
 plt.savefig("size-scaling.png")
-#write_text(np.array([XX,DS]),"./"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"DS.aux")
+write_text(np.array([Linv,maxis]),"./"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"SC.aux")
 
 
 

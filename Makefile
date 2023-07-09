@@ -1,5 +1,5 @@
 L=10
-t= $(shell echo "scale=0; (sqrt($L)*$L)" | bc)
+t= $(shell echo "scale=0; sqrt($L*$L*$L)" | bc)
 pp=5000
 dp=40
 sites=$L
@@ -39,7 +39,7 @@ lnumbers= 16 20 24 28 32 36
 lvalues=$(addprefix l_,$(lnumbers))
 varyl:$(lvalues)
 $(lvalues):
-	$(MAKE) DP_L$(@:l_%=%)T$(shell echo "scale=0; (sqrt($(@:l_%=%))*$(@:l_%=%))" | bc)P$(pp)S$(@:l_%=%).txt 
+	$(MAKE) DP_L$(@:l_%=%)T$(shell echo "scale=0; sqrt($(@:l_%=%)*$(@:l_%=%)*$(@:l_%=%))" | bc)P$(pp)S$(@:l_%=%).txt 
 
 
 starting=_OP_
