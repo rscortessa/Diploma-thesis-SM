@@ -90,7 +90,7 @@ plt.plot(P,S,color="black")
 plt.plot(X,Y,color="red",label="interpolation")
 plt.legend()
 plt.savefig("./graph8/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
-write_text(np.array([P,S]),"./graph8/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.aux")
+write_text(np.array([P,S]),"./graph8/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.aux"+str(fr))
 
 
 
