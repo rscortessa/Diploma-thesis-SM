@@ -98,7 +98,7 @@ PP=np.array([pp+za*int(i/N) for i in range(int(m))])
 plt.figure(figsize=(8,6))
 plt.title(r"$Projection\; of\; the \; DATA \;set\; in\; the\; first\; PC$"+"\n"
          +"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
-plt.scatter(PP,x_pca[:,0],s=1,c=np.array([pp+za*int(i/N) for i in range(int(m))]),cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
+plt.scatter(PP,np.abs(x_pca[:,0]),s=1,c=np.array([pp+za*int(i/N) for i in range(int(m))]),cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
 plt.xlabel(r"$Probability \; p$",fontsize=14)
 plt.ylabel(r"$PC_1$",fontsize=14)
 plt.legend()
@@ -108,7 +108,7 @@ plt.savefig("./graph3/"+system[allsys]+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp
 plt.figure(figsize=(8,6))
 plt.title(r"$Projection\; of\; the \; DATA \;set\; in\; the\; second\; PC$"+"\n"
          +"$L="+str(L)+"\;"+"t="+str(t)+"$",fontsize=14)
-plt.scatter(np.array([pp+za*int(i/N) for i in range(int(m))]),x_pca[:,1],c=np.array([pp+za*int(i/N) for i in range(int(m))]),s=1,cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
+plt.scatter(PP,np.abs(x_pca[:,1]),c=np.array([pp+za*int(i/N) for i in range(int(m))]),s=1,cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
 plt.xlabel(r"$Probability \; p$",fontsize=14)
 plt.ylabel(r"$PC_2$",fontsize=14)
 plt.legend()

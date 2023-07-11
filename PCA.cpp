@@ -27,17 +27,24 @@ int main(int argc,char* argv[])
       
       for(int w=0;w<M/pstep;w++)
 	{
+          #pragma omp parallel for private(sys)
 	  for(int l=0;l<N;l++) // for between different samples
 	    {
-	      RANDOM // initialize the distribution with a different seed
+	      RANDOM
+	      std::stringstream strings;
+	      // initialize the distribution with a different seed
 	      sys=aux; // The initial setup is always the same 
 	      for(int j=0;j<t;j++)
 		{
 		  evolution(sys,p+dp*w,dist0,e2,L); // Evolves the system
-		  print_state(sys,file);
+		  print_state(sys,strings);
 		}
-	      file<<"\n";
-	    }    
+	      #pragma omp critical
+	      {
+	      file<<strings.str()<<"\n";
+	      }
+	    }
+	  
 	}
     }
 
@@ -45,11 +52,12 @@ int main(int argc,char* argv[])
     {
       for(int w=0;w<M/pstep;w++)
 	{
+	  #pragma omp parallel for private(sys)
 	  for(int l=0;l<N;l++) // for between different samples
 	    {
 	      RANDOM // initialize the distribution with a different seed
 	      sys=aux; // The initial setup is always the same 
-
+	      std::stringstream strings;
 	      for(int j=0;j<t-Numberpics;j++)
 		{
 		  if(evolution(sys,p+dp*w,dist0,e2,L)==0) // Evolves the system implicit in an if.
@@ -61,11 +69,13 @@ int main(int argc,char* argv[])
 	      for(int j=t-Numberpics;j<t;j++)
 		{
 		  evolution(sys,p+dp*w,dist0,e2,L); // Evolves the system
-		  print_state(sys,file);
+		  print_state(sys,strings);
 		}
 
-	      file<<"\n";
-
+	      #pragma omp critical
+	      {
+	      file<<strings.str()+"\n";
+	      }
 	    }    
 	}
 

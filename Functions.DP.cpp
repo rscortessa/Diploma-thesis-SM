@@ -28,35 +28,37 @@ std::vector<bool>  initcond(int L,std::mt19937& e2,int N)
 }
 
 
-int evolution(std::vector<bool> &sys,double p,std::uniform_real_distribution<double>& a, std::mt19937& e2, int L)
+int evolution(std::vector<bool> &sys,double p,std::uniform_real_distribution<double>& a, std::mt19937& a2, int L)
 {
   std::vector<bool> copy;
-  bool c;
-  bool d;
   int sum=0;
   copy=sys;
-  for(int i=1;i<sys.size()+1;i++)
-    {
-      
-      c= (copy[i-1]==1 && a(e2)<=p);
-      d= (copy[(i+1)%L]==1 && a(e2)<=p);
-      sys[i%L]= (c || d);
-      sum=sum+sys[i%L];
-    }
+  bool c=0;
+  bool d=0;
+#pragma omp parallel for reduction(+:sum) private(c,d)
+  for(int i=1;i<L+1;i++)
+      {
+	c= (copy[i-1]==1 && a(a2)<=p);
+	d= (copy[(i+1)%L]==1 && a(a2)<=p);
+	sys[i%L]= (c || d);
+	sum=sum+sys[i%L];
+      }
+ 
   return sum;
 }
 
 
-void print_state(std::vector<bool> &sys, std::ofstream& filename)
+void print_state(std::vector<bool> &sys,std::stringstream &strings)
 {
-  auto finit = [&filename](const bool& a) { filename << a << " ";};
+  auto finit = [&strings](const bool& a) { strings << a << " ";};
   std::for_each(sys.begin(),sys.end(),finit);
 }
 
 
 void print(std::vector<bool> &sys, std::ofstream& filename, int t)
 {
-  for(int j=0;j<sys.size();j++)
+  int size=sys.size();
+  for(int j=0;j<size;j++)
     {
       if(sys[j]==1)
 	{
@@ -68,7 +70,8 @@ void print(std::vector<bool> &sys, std::ofstream& filename, int t)
 void count(std::vector<bool> &sys, std::vector<double>& b, int time,int m, int t)
 {
   int a=0;
-  for(int i=0;i<sys.size();i++)
+  int size=sys.size();
+  for(int i=0;i<size;i++)
     {
       a=a+sys[i];
     }

@@ -12,7 +12,7 @@ z=2
 allsys=1
 
 %.x:%.cpp 
-	@$(CXX) $(CXXFLAGS) -o $@ $< Functions.DP.cpp
+	@$(CXX) $(CXXFLAGS) -Wall -fsanitize=address -fno-omit-frame-pointer -fopenmp -o $@ $< Functions.DP.cpp
 
 DP_OP_L%.txt: DP.x
 	if [ -e ${dir}$@ -a -e ${dir}${subst .txt,data.txt,${subst DP_OP,DP,$@}} ]; then \
