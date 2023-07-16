@@ -27,6 +27,7 @@ int main(int argc,char* argv[])
       
       for(int w=0;w<M/pstep;w++)
 	{
+	  std::cout<<"load "<<M/pstep/(w+1)*100<<std::endl;
           #pragma omp parallel for private(sys)
 	  for(int l=0;l<N;l++) // for between different samples
 	    {
@@ -52,6 +53,7 @@ int main(int argc,char* argv[])
     {
       for(int w=0;w<M/pstep;w++)
 	{
+	  std::cout<<"load "<<M/pstep/(w+1)*100<<std::endl;
 	  #pragma omp parallel for private(sys)
 	  for(int l=0;l<N;l++) // for between different samples
 	    {

@@ -79,7 +79,7 @@ plt.figure(figsize=(8,6))
 plt.title(r"$ \langle P_1 \rangle \; vs \;"+"p$"+"\n $for \;different\; sizes\; (L)\; "+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$\langle P_1 \rangle$",fontsize=14)
-plt.yscale("log")
+#plt.yscale("log")
 for l in range(num_l):
     plt.errorbar(C,A[:,l],yerr=B[:,l],label=r"$ \langle P_1 \rangle \;L="+str(L[l])+"$")
     plt.plot(C,A[:,l],color="black") 
@@ -96,7 +96,7 @@ plt.figure(figsize=(8,6))
 plt.title(r"$|PC_1|\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$|PC_1|$",fontsize=14)
-plt.yscale("log")
+#plt.yscale("log")
 
 PI=pp
 PF=pp+dp

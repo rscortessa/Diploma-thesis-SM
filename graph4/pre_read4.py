@@ -78,6 +78,6 @@ for ii in range(num_b):
 for ii in range(num):
     pca[ii]=np.mean(A[ii,:])
     err_pca[ii]=np.std(A[ii,:])/np.sqrt(num)
-
     
 write_text(np.array([pca,err_pca]),"./graph4/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+"N"+str(N)+"Z"+str(zas)+".aux")
+

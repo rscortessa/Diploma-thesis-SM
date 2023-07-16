@@ -34,20 +34,27 @@ print("This is m",m)
 
 allsys=int(arg[8])
 system=["Equilibrium","Total\;system"]
-batch_sizes=int(arg[9])
+batch_sizes=int(int(arg[9])*m/100)
 ## This part of the code creates the image for the percolation:
 
 
 A=pd.read_csv("./graph3/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,dtype=np.uint8)
 A.info(memory_usage="deep")
-
+A=np.array(A)
 scaler=StandardScaler()
 scaler.fit(A)
-scaled_data=scaler.transform(A)
-pca=IncrementalPCA(batch_size=batch_sizes)
-
+#scaled_data=scaler.transform(A)
+scaled_data=A
+#pca=IncrementalPCA(batch_size=batch_sizes)
+pca=PCA()
 pca.fit(scaled_data)
-x_pca=pca.transform(scaled_data)
+#scaled_data=A
+#v=pca.components_
+x_pca=np.dot(scaled_data,pca.components_.T)
+x_pca=np.array(x_pca)
+#x_pca=pca.transform(scaled_data)
+print(A[0],x_pca[0])
+
 #del A
 #del scaled_data
 #gc.collect()
@@ -124,7 +131,7 @@ plt.savefig("./graph3/"+system[allsys]+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp
 #Principal Components
 #N is the number of repetitions
 #int(m/N) is the number of points with different probability
-num=int(m/N)
+num=math.floor(dp/za)
 print("this is num", num)
 num_pca=4
 A=[[0 for i in range(num_pca)] for i in range(num)]
