@@ -29,7 +29,7 @@ int main(int argc,char* argv[])
       for(int w=0;w<M/pstep;w++)
 	{
 	  
-          #pragma omp parallel for private(sys)
+	  #pragma omp parallel for private(sys)
 	  for(int l=0;l<N;l++) // for between different samples
 	    {
 	      

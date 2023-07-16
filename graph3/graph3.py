@@ -34,30 +34,54 @@ print("This is m",m)
 
 allsys=int(arg[8])
 system=["Equilibrium","Total\;system"]
-batch_sizes=int(int(arg[9])*m/100)
+portion=int(arg[9])
 ## This part of the code creates the image for the percolation:
+m=math.floor(dp/za)*N
+read_portion=int(m*portion/100)
+r_portion=(portion/100*N)
 
+entire_set=True
+centralized=False
 
-A=pd.read_csv("./graph3/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,dtype=np.uint8)
-A.info(memory_usage="deep")
-A=np.array(A)
-scaler=StandardScaler()
-scaler.fit(A)
-#scaled_data=scaler.transform(A)
-scaled_data=A
-#pca=IncrementalPCA(batch_size=batch_sizes)
-pca=PCA()
-pca.fit(scaled_data)
-#scaled_data=A
-#v=pca.components_
-x_pca=np.dot(scaled_data,pca.components_.T)
-x_pca=np.array(x_pca)
-#x_pca=pca.transform(scaled_data)
-print(A[0],x_pca[0])
+if portion==100:
+    entire_set=True
+else:
+    entire_set=False
 
-#del A
-#del scaled_data
-#gc.collect()
+filename="./graph3/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt"
+
+if entire_set==True:
+    files=pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8)
+    if centralized==False:
+        vary=np.array(files.std())
+    scaler=StandardScaler()
+    scaler.fit(files)
+    scaled_data=scaler.transform(files)
+    pca=PCA()
+    pca.fit(scaled_data)
+    if centralized==False:
+        pca_L=np.dot(files,np.multiply(pca.components_.T,vary))
+    else:
+        pca_L=pca.transform(scaled_data)
+    x_pca=pca_L
+else:
+    tracemalloc.start()
+    with pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8,chunksize=read_portion) as reader:
+        for chunk in reader:
+            print(chunk,sys.getsizeof(chunk))
+            pca.partial_fit(chunk)    
+    print("PCA",sys.getsizeof(pca))
+
+    with pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8,chunksize=read_portion) as reader:
+        for chunk in reader:
+            x_pca=pca.transform(chunk)
+            x_pca=np.abs(x_pca[:,0])
+            pca_L=np.concatenate((pca_L,x_pca),axis=0)
+    x_pca=pca_L
+    print(tracemalloc.get_traced_memory())
+    tracemalloc.stop()
+
+    
 
 y=pca.explained_variance_ratio_
 sing=pca.singular_values_
