@@ -20,10 +20,10 @@ do
     done    
     #rm ./graph4/*.txt
 done
-
+wait
 for ll in $L
 do
-    python3 ./graph4/pre_read4.py $ll $( echo "$(perl -E "say $i**(1.7)" | awk -F'.' '{print $1}')" | bc) $pp $dp $N $z $allsys
+    python3 ./graph4/pre_read4.py $ll $( echo "$(perl -E "say $ll**(1.7)" | awk -F'.' '{print $1}')" | bc) $pp $dp $N $z $allsys
 done
 
 for jj in $(seq 1 1 $howmuch)

@@ -21,16 +21,18 @@ int main(int argc,char* argv[])
   name=dir+"DP_L"+std::to_string(L)+"T"+std::to_string(t)+"P("+std::to_string(pp)+"-"+std::to_string(pp+M)+")"+"S"+std::to_string(sites)+".txt";
   std::ofstream file(name);
      
-  
+  std::cout<<"STARTING..."<<std::endl;
+  std::cout<<"Probability Values completed:"<<std::endl;
   if(totalsystem==true)
     {
       
       for(int w=0;w<M/pstep;w++)
 	{
-	  std::cout<<"load "<<M/pstep/(w+1)*100<<std::endl;
+	  
           #pragma omp parallel for private(sys)
 	  for(int l=0;l<N;l++) // for between different samples
 	    {
+	      
 	      RANDOM
 	      std::stringstream strings;
 	      // initialize the distribution with a different seed
@@ -45,7 +47,7 @@ int main(int argc,char* argv[])
 	      file<<strings.str()<<"\n";
 	      }
 	    }
-	  
+	  std::cout<<p+dp*w<<" ";
 	}
     }
 
@@ -53,7 +55,6 @@ int main(int argc,char* argv[])
     {
       for(int w=0;w<M/pstep;w++)
 	{
-	  std::cout<<"load "<<M/pstep/(w+1)*100<<std::endl;
 	  #pragma omp parallel for private(sys)
 	  for(int l=0;l<N;l++) // for between different samples
 	    {
@@ -78,7 +79,8 @@ int main(int argc,char* argv[])
 	      {
 	      file<<strings.str()+"\n";
 	      }
-	    }    
+	    }
+	  std::cout<<p+dp*w<<" ";
 	}
 
     }

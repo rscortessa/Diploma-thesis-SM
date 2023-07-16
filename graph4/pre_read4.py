@@ -28,7 +28,7 @@ def write_text(A,filename):
 ### The parameters are defined:
 
 arg=sys.argv
-print(arg)
+#print(arg)
 L=int(arg[1])
 t=int(arg[2])
 pp=int(arg[3])
@@ -41,12 +41,12 @@ m=dp/zas*N
 AA=os.listdir("./graph4/")
 BB=[]
 ### We look for the files of the runs we have created, the purpose is to make an average.
-
+#print("THIS L:",L,AA)
 for x in AA:
     if re.match("DP_L"+str(L)+"T"+str(t)+"P\("+str(pp)+"-"+str(pp+dp)+"\)S[0-9]+N"+str(N)+"Z"+str(zas)+".aux[0-9]+",x):
         BB.append(x)
 
-
+#print("L=",L,"BB=",BB)
 num=int(m/N)
 num_b=len(BB)
 
@@ -76,6 +76,7 @@ for ii in range(num_b):
 ### Then the average is made, and the error is computed.
 
 for ii in range(num):
+    #print("ii=",ii,A[ii,:])
     pca[ii]=np.mean(A[ii,:])
     err_pca[ii]=np.std(A[ii,:])/np.sqrt(num)
     

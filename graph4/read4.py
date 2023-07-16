@@ -8,8 +8,10 @@ import re
 import statsmodels.api as sm
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import IncrementalPCA
-import tracemalloc
+from sklearn.decomposition import PCA
 
+import tracemalloc
+import math
 def write_text(A,filename):
     if(len(A))>0:
         C=open(filename,"w")
@@ -17,6 +19,7 @@ def write_text(A,filename):
             C.write(" ".join(map(str,A[:,ii]))+str("\n"))
 
 arg=sys.argv
+print(arg)
 pp=int(arg[1])
 dp=int(arg[2])
 N=int(arg[3])
@@ -25,11 +28,12 @@ L=int(arg[5])
 t=int(arg[6])
 howmuch=int(arg[7])
 portion=int(arg[8])
-
+m=math.floor(dp/zas)*N
 read_portion=int(m*portion/100)
 r_portion=(portion/100*N)
 
 entire_set=True
+centralized=True
 
 if portion==100:
     entire_set=True
@@ -43,23 +47,24 @@ num=int(m/N)
 
 filename="./graph4/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+".txt"
 
-
-
-
-
 A=[[0 for i in range(num)],[0 for i in range(num)]]
 pca_L=np.array([])
 pca=IncrementalPCA(n_components=1)
 
 if entire_set==True:
     files=pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8)
+    if centralized==False:
+        vary=np.array(files.std())
     scaler=StandardScaler()
     scaler.fit(files)
     scaled_data=scaler.transform(files)
     pca=PCA(n_components=1)
     pca.fit(scaled_data)
-    x_pca=pca.transform(scaled_data)
-
+    if centralized==False:
+        pca_L=np.dot(files,np.multiply(pca.components_.T,vary))
+    else:
+        pca_L=pca.transform(scaled_data)
+    pca_L=np.abs(pca_L)
 else:
     tracemalloc.start()
     with pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8,chunksize=read_portion) as reader:

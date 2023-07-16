@@ -152,7 +152,7 @@ if len(L)>=2:
    plt.scatter(Linv,minis)
    plt.plot(x,Result[0]+x*Result[2],label=r"$p_c^{*} \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
    plt.legend()
-   plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
+   plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
 
 
 
