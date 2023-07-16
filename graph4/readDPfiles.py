@@ -44,16 +44,13 @@ if portion==100:
     BB=pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8)
     if centralized==False:
         vary=BB.std()
-        normalization=np.zeros((len(vary),len(vary)))
-        for j in range(len(vary)):
-            normalization[i,i]=vary[i]
     scaler=StandardScaler()
     scaler.fit(BB)
     scaled_data=scaler.transform(BB)
     pca=PCA(n_components=1)
     pca.fit(scaled_data)
     if centralized==False:
-        pca_L=np.dot(BB,np.dot(normalization,pca.components_).T)
+        pca_L=np.dot(BB,np.multiply(vary,pca.components_.T).T)
     else:
         pca_L=pca.transform(scaled_data)
     pca_L=np.abs(pca_L)
