@@ -32,6 +32,7 @@ num=int(m/N)
 ###Length of the file: m*N
 read_portion=int(m*portion/100)
 r_portion=(portion/100*N)
+centralized=False
 
 filename="DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+".txt"
 
@@ -41,12 +42,20 @@ pca_L=np.array([])
 
 if portion==100:
     BB=pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8)
+    if centralized==False:
+        vary=BB.std()
+        normalization=np.zeros((len(vary),len(vary)))
+        for j in range(len(vary)):
+            normalization[i,i]=vary[i]
     scaler=StandardScaler()
     scaler.fit(BB)
     scaled_data=scaler.transform(BB)
     pca=PCA(n_components=1)
     pca.fit(scaled_data)
-    pca_L=pca.transform(scaled_data)
+    if centralized==False:
+        pca_L=np.dot(BB,np.dot(normalization,pca.components_).T)
+    else:
+        pca_L=pca.transform(scaled_data)
     pca_L=np.abs(pca_L)
 else:
     tracemalloc.start()
