@@ -135,7 +135,7 @@ plt.legend()
 plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PCaux.pdf")
 
 if len(L)>=2:
-   Linv=[1/l for l in L]
+   Linv=[1/l**2 for l in L]
    Linv.reverse()
    minis.reverse()
    Linv=np.array(Linv)
@@ -143,15 +143,14 @@ if len(L)>=2:
 
    x=np.array(Linv).reshape((-1,1))
    Result=LinearR2(x,zet)
-
+   x=[0]+Linv
    plt.figure(figsize=(8,6))
    plt.title(r"$Finite\;size\;scaling\;of\;the\;minimum\;of\;\langle P_1 \rangle\;$",fontsize=14)
-   plt.xlabel(r"$1/L$",fontsize=14)
-   plt.ylabel(r"$p_{c}$",fontsize=14)
-   #plt.xscale("log")
-   plt.xlim([min(Linv)-0.001,max(Linv)+0.001])
+   plt.xlabel(r"$1/L^2$",fontsize=14)
+   plt.ylabel(r"$p^*$",fontsize=14)
+   plt.xlim([0.0,max(Linv)+0.001])
    plt.scatter(Linv,minis)
-   plt.plot(x,Result[0]+x*Result[2],label=r"$p_c \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
+   plt.plot(x,Result[0]+x*Result[2],label=r"$p_c^{*} \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
    plt.legend()
    plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
 
