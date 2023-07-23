@@ -13,7 +13,7 @@ int main(int argc,char* argv[])
   aux=initcond(L,e2,sites); // Initialize the first srtup 
   int M=std::stoi(std::string(argv[5])); // How much the probability increases in total x 10.000
   int pstep=stoi(std::string(argv[8])); // How much the probability increases for each step x 10.000
-  double dp=pstep*1.0/(10000);    
+  double dp=pstep*1.0/scaling;    
   bool totalsystem=std::stoi(std::string(argv[9]));
   int Numberpics=1;
   

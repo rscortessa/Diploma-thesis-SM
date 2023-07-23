@@ -2,6 +2,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import sys
 import numpy as np
+
+def write_text(A,filename):
+    if(len(A))>0:
+        C=open(filename,"w")
+        for ii in range(len(A[0,:])):
+            C.write(" ".join(map(str,A[:,ii]))+str("\n"))
+
+
+
 arg=sys.argv
 L=int(arg[1])
 t=int(arg[2])
@@ -37,3 +46,4 @@ plt.legend()
 plt.savefig("DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+"rho.png")
 
 
+write_text(np.array([p,rho]),"rho.txt")

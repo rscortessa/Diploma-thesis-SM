@@ -24,7 +24,8 @@ void orderparameter(std::vector<double>& b,std::ofstream& filename, int t, int N
     int sites = std::stoi(std::string(argv[4]));\
     int N=std::stoi(std::string(argv[6]));\
     std::string dir=std::string(argv[7]);\
-    double p=pp/(10000.0);\
+    double scaling=10000.0;\
+    double p=pp/scaling;\
     std::vector<bool> sys(L,0);\
     std::vector<bool> aux(L,0);\
     std::vector<double> rho(t*N,0);\

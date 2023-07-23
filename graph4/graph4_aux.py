@@ -30,7 +30,7 @@ dp=int(arg[2])
 N=int(arg[3])
 zas=int(arg[4])
 allsys=int(arg[5]); system=["Equilibrium","Total\;system"]
-
+normalization=10000
 m=dp/zas*N
 AA=os.listdir("./graph4/")
 BB=[]
@@ -81,9 +81,9 @@ plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$\langle P_1 \rangle$",fontsize=14)
 #plt.yscale("log")
 for l in range(num_l):
-    plt.errorbar(C,A[:,l],yerr=B[:,l],label=r"$ \langle P_1 \rangle \;L="+str(L[l])+"$")
-    plt.plot(C,A[:,l],color="black") 
-plt.axvline(x=6447, color="b",label="$p_c$")
+    plt.errorbar(C/normalization,A[:,l],yerr=B[:,l],label=r"$ \langle P_1 \rangle \;L="+str(L[l])+"$")
+    plt.plot(C/normalization,A[:,l],color="black") 
+plt.axvline(x=6447/normalization, color="b",label="$p_c$")
 plt.legend()
 plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC1.pdf")
 
@@ -91,12 +91,6 @@ plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC1
 
 minis=[0 for i in range(len(L))]
 
-
-plt.figure(figsize=(8,6))
-plt.title(r"$|PC_1|\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
-plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
-plt.ylabel(r"$|PC_1|$",fontsize=14)
-#plt.yscale("log")
 
 PI=pp
 PF=pp+dp
@@ -125,12 +119,12 @@ for i in range(len(L)):
     Y=mymodel(X)
     jj=np.where(Y == Y.min())[0][0]
     minis[i]=X[jj]
-    plt.plot(X,Y)
-    plt.errorbar(C,A[:,i],yerr=B[:,i],label=r"$\langle P_1\rangle \;L="+str(L[i])+"$")
-    plt.plot(C,A[:,i],color="black") 
+    plt.plot(X/normalization,Y)
+    plt.errorbar(C/normalization,A[:,i],yerr=B[:,i],label=r"$\langle P_1\rangle \;L="+str(L[i])+"$")
+    plt.plot(C/normalization,A[:,i],color="black") 
     plt.plot()
 
-plt.axvline(x=6447, color="b",label="$p_c$")
+plt.axvline(x=6447/normalization, color="b",label="$p_c$")
 plt.legend()
 plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PCaux.pdf")
 
@@ -149,8 +143,9 @@ if len(L)>=2:
    plt.xlabel(r"$1/L^2$",fontsize=14)
    plt.ylabel(r"$p^*$",fontsize=14)
    plt.xlim([0.0,max(Linv)+0.001])
-   plt.scatter(Linv,minis)
-   plt.plot(x,Result[0]+x*Result[2],label=r"$p_c^{*} \approx"+str(round(Result[0],3))+"\pm"+str(round(Result[1],5))+"$")
+   plt.scatter(Linv,zet/normalization)
+   exponent=int(np.log10(normalization))
+   plt.plot(x,(Result[0]+x*Result[2])/normalization,label=r"$p_c^{*} \approx"+str(round(Result[0]/normalization,exponent))+"\pm"+str(round(Result[1]/normalization,exponent+1))+"$")
    plt.legend()
    plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"REGmin.pdf")
 

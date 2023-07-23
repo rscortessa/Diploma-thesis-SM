@@ -8,8 +8,12 @@ import gc
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.decomposition import IncrementalPCA
-
 import math
+import importlib.util
+
+sys.path.append("./")
+from analyze_data import PCA_txt_
+
 
 def write_text(A,filename):
     if(len(A))>0:
@@ -35,6 +39,7 @@ print("This is m",m)
 allsys=int(arg[8])
 system=["Equilibrium","Total\;system"]
 portion=int(arg[9])
+normalization=10000
 ## This part of the code creates the image for the percolation:
 m=math.floor(dp/za)*N
 read_portion=int(m*portion/100)
@@ -48,41 +53,9 @@ if portion==100:
 else:
     entire_set=False
 
-filename="./graph3/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt"
-
-if entire_set==True:
-    files=pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8)
-    if centralized==False:
-        vary=np.array(files.std())
-    scaler=StandardScaler()
-    scaler.fit(files)
-    scaled_data=scaler.transform(files)
-    pca=PCA()
-    pca.fit(scaled_data)
-    if centralized==False:
-        pca_L=np.dot(files,np.multiply(pca.components_.T,vary))
-    else:
-        pca_L=pca.transform(scaled_data)
-    x_pca=pca_L
-else:
-    tracemalloc.start()
-    with pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8,chunksize=read_portion) as reader:
-        for chunk in reader:
-            print(chunk,sys.getsizeof(chunk))
-            pca.partial_fit(chunk)    
-    print("PCA",sys.getsizeof(pca))
-
-    with pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8,chunksize=read_portion) as reader:
-        for chunk in reader:
-            x_pca=pca.transform(chunk)
-            x_pca=np.abs(x_pca[:,0])
-            pca_L=np.concatenate((pca_L,x_pca),axis=0)
-    x_pca=pca_L
-    print(tracemalloc.get_traced_memory())
-    tracemalloc.stop()
+pca,x_pca=PCA_txt_(L,t,pp,dp,sites,"/graph3/",entire_set,centralized,read_portion,True)
 
     
-
 y=pca.explained_variance_ratio_
 sing=pca.singular_values_
 
@@ -104,7 +77,7 @@ else:
 
     
 plt.figure(figsize=(8,6))
-plt.title(r"$PCA_1\; vector\;$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
+plt.title(r"$P_1\; vector\;$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
 plt.scatter(q,z[0,:],s=5,label=r"$PCA_1\;proyection$")
 plt.legend()
 plt.savefig("./graph3/"+system[allsys]+"L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"PCA1_proy.png")
@@ -115,8 +88,8 @@ plt.figure(figsize=(8,6))
 plt.title(r"$Projection\; of\; the \; DATA \;set\; in\; the\; two \; first\; PCs$"+"\n"
          +"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
 plt.scatter(x_pca[:,0],x_pca[:,1],s=1,c=np.array([pp+za*int(i/N) for i in range(int(m))]),cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
-plt.xlabel(r"$PC_1$",fontsize=14)
-plt.ylabel(r"$PC_2$",fontsize=14)
+plt.xlabel(r"$P_1$",fontsize=14)
+plt.ylabel(r"$P_2$",fontsize=14)
 plt.legend()
 cbar = plt.colorbar(ax=plt.gca())
 cbar.ax.set_title(r'$Probability \times 10^{3}$', fontsize=12)
@@ -129,7 +102,7 @@ PP=np.array([pp+za*int(i/N) for i in range(int(m))])
 plt.figure(figsize=(8,6))
 plt.title(r"$Projection\; of\; the \; DATA \;set\; in\; the\; first\; PC$"+"\n"
          +"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
-plt.scatter(PP,np.abs(x_pca[:,0]),s=1,c=np.array([pp+za*int(i/N) for i in range(int(m))]),cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
+plt.scatter(PP/normalization,np.abs(x_pca[:,0]),s=1,c=np.array([pp+za*int(i/N) for i in range(int(m))]),cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
 plt.xlabel(r"$Probability \; p$",fontsize=14)
 plt.ylabel(r"$PC_1$",fontsize=14)
 plt.legend()
@@ -139,7 +112,7 @@ plt.savefig("./graph3/"+system[allsys]+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp
 plt.figure(figsize=(8,6))
 plt.title(r"$Projection\; of\; the \; DATA \;set\; in\; the\; second\; PC$"+"\n"
          +"$L="+str(L)+"\;"+"t="+str(t)+"$",fontsize=14)
-plt.scatter(PP,np.abs(x_pca[:,1]),c=np.array([pp+za*int(i/N) for i in range(int(m))]),s=1,cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
+plt.scatter(PP/normalization,np.abs(x_pca[:,1]),c=np.array([pp+za*int(i/N) for i in range(int(m))]),s=1,cmap="plasma",norm=cl.Normalize(vmin=pp, vmax=pp+dp),label="dataset")
 plt.xlabel(r"$Probability \; p$",fontsize=14)
 plt.ylabel(r"$PC_2$",fontsize=14)
 plt.legend()
@@ -176,11 +149,11 @@ C=np.array(C)
 
 plt.figure(figsize=(8,6))
 plt.title(r"$|PCs|\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
-plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
+plt.xlabel(r"$Probability\;p$",fontsize=14)
 plt.ylabel(r"$|PC|$",fontsize=14)
 for l in range(num_pca):
-    plt.errorbar(C,A[:,l],yerr=B[:,l],label=r"$|PCA_"+str(l+1)+"|$")
-    plt.plot(C,A[:,l],color="black") 
+    plt.errorbar(C/normalization,A[:,l],yerr=B[:,l],label=r"$|PCA_"+str(l+1)+"|$")
+    plt.plot(C/normalization,A[:,l],color="black") 
     plt.legend()
 plt.savefig("./graph3/"+system[allsys]+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"PCs.pdf")
 
