@@ -55,16 +55,14 @@ void print_state(std::vector<bool> &sys,std::stringstream &strings)
 }
 
 
-void print(std::vector<bool> &sys, std::ofstream& filename, int t)
+void print(std::vector<bool> &sys, std::ofstream& filename)
 {
   int size=sys.size();
   for(int j=0;j<size;j++)
     {
-      if(sys[j]==1)
-	{
-	  filename<<j<<" "<<t<<"\n";
-	}
+      filename<<sys[j]<<" ";
     }
+  filename<<"\n";
 }
 
 void count(std::vector<bool> &sys, std::vector<double>& b, int time,int m, int t)

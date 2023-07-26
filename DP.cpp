@@ -24,7 +24,7 @@ int main(int argc,char* argv[])
 	{
 	  if(l==N-1) // The last sample is printed
 	    {
-	      print(sys,file1,j); // This prints to file1 the positions in space and time of the active sites
+	      print(sys,file1); // This prints to file1 the positions in space and time of the active sites
 	    }
 	  count(sys,rho,j,l,t); // Counts the number of active sites per time
 	  evolution(sys,p,dist0,e2,L); // Evolves the system

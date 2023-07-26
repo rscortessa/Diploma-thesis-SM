@@ -45,13 +45,13 @@ m=math.floor(dp/za)*N
 read_portion=int(m*portion/100)
 r_portion=(portion/100*N)
 
-entire_set=True
-centralized=False
+entire_set=False
+centralized=True
 
-if portion==100:
-    entire_set=True
-else:
-    entire_set=False
+#if portion==100:
+#    entire_set=True
+#else:
+#    entire_set=False
 
 pca,x_pca=PCA_txt_(L,t,pp,dp,sites,"/graph3/",entire_set,centralized,read_portion,True)
 

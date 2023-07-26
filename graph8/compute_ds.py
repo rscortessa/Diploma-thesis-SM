@@ -64,8 +64,8 @@ for yy in range(waw): #Loop over all diferent points
 #It is plotted the entropy:
 # We define the points were the derivative is calculated
 # These points are approximately in the region 5900-6500
-PI=5900
-PF=6500
+PI=6200
+PF=6600
 indexPI=0
 indexPF=0
 X=np.arange(PI,PF,1)
@@ -78,7 +78,7 @@ for ii in range(len(P)):
         
 mymodel=np.poly1d(np.polyfit(P[indexPI:indexPF],S[indexPI:indexPF],smooth))
 Y=mymodel(X)
-DY=mymodel.deriv(m=2)
+DY=mymodel.deriv(m=1)
 ds=DY(X)
 
 plt.figure(figsize=(8,6))
