@@ -39,7 +39,7 @@ lnumbers= 16 20 24 28 32 36
 lvalues=$(addprefix l_,$(lnumbers))
 varyl:$(lvalues)
 $(lvalues):
-	$(MAKE) DP_L$(@:l_%=%)T$(shell echo "$$(( $$(perl -E 'say $(@:l_%=%)**(1.7)' | awk -F'.' '{print $$1}') ))"  | bc)P$(pp)S$(@:l_%=%).txt 
+	$(MAKE) DP_L$(@:l_%=%)T$(shell echo "$$(( $$(perl -E 'say $(@:l_%=%)**(1.58)' | awk -F'.' '{print $$1}') ))"  | bc)P$(pp)S$(@:l_%=%).txt 
 
 
 starting=_OP_

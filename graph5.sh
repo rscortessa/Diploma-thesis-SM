@@ -11,7 +11,7 @@ if [ $# -eq 0 ];then
        smooth=0
        else
        L=$1
-       t=$( echo "$(perl -E "say $L**(1.7)" | awk -F'.' '{print $1}')" | bc)
+       t=$( echo "$(perl -E "say $L**(1.58)" | awk -F'.' '{print $1}')" | bc)
        pp=$3
        dp=$4
        z=$5
