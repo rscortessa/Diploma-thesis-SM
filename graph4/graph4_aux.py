@@ -57,8 +57,8 @@ pca_L=np.array(pca_L)
 num=int(m/N)
 num_l=len(L)
 
-A=[[0 for i in range(num_l)] for i in range(num)]
-B=[[0 for i in range(num_l)] for i in range(num)]
+A=[[0.0 for i in range(num_l)] for i in range(num)]
+B=[[0.0 for i in range(num_l)] for i in range(num)]
 C=[pp+zas*i for i in range(num)]
 A=np.array(A)
 B=np.array(B)
