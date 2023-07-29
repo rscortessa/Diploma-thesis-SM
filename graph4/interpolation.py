@@ -65,8 +65,8 @@ pca_L=[0 for i in range(len(L))]
 pca_L=np.array(pca_L)    
 num=int(m/N)
 num_l=len(L)
-A=[[0 for i in range(num_l)] for i in range(num)]
-B=[[0 for i in range(num_l)] for i in range(num)]
+A=[[0.0 for i in range(num_l)] for i in range(num)]
+B=[[0.0 for i in range(num_l)] for i in range(num)]
 C=[pp+zas*i for i in range(num)]
 A=np.array(A)
 B=np.array(B)
@@ -74,8 +74,7 @@ C=np.array(C)
 
 for ii in range(len(L)):
     ## This part of the code creates the image for the percolation:
-    File=pd.read_csv("./DP_L"+str(L[ii])+"T"+str(t[ii])+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites[ii])+"N"+str(N)+"Z"+str(zas)+".aux",delim_whitespace=True,header=None)
-    print(A[ii,:])
+    File=pd.read_csv("./DP_L"+str(L[ii])+"T"+str(t[ii])+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites[ii])+"N"+str(N)+"Z"+str(zas)+".aux",dtype=float,delim_whitespace=True,header=None)
     A[:,ii]=File[0]
     B[:,ii]=File[1]
     #Principal Components
@@ -87,6 +86,8 @@ plt.title(r"$ \langle P_1 \rangle \; vs \;"+"p$"+"\n $for \;different\; sizes\; 
 plt.xlabel(r"$Probability\;p\;$",fontsize=14)
 plt.ylabel(r"$\langle P_1 \rangle$",fontsize=14)
 for l in range(num_l):
+    print("PLOT")
+    print(A[:,l])
     plt.errorbar(C/10000,A[:,l],yerr=B[:,l],label=r"$ \langle P_1 \rangle \;L="+str(L[l])+"$")
     plt.plot(C/10000,A[:,l],color="black") 
 plt.axvline(x=0.6447, color="b",label="$p_c$")

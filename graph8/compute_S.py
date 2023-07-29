@@ -79,7 +79,7 @@ Y=[0 for i in range(len(L))]
 #PI=5800
 #PF=6600
 PI=6400
-PF=6460
+PF=6500
 indexPI=0
 indexPF=0
 X=np.arange(PI,PF,1)
@@ -103,16 +103,31 @@ for i in range(len(L)):
 
 
 plt.figure(figsize=(8,6))
-plt.title(r"$S(p)\; vs \;"+"p$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
+plt.title(r"$S(p)\; vs \;"+"p$"+"\n $"+system[allsys]+"$",fontsize=14)
 plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
 plt.ylabel(r"$Entropy\;S(p)$",fontsize=14)
+
+# Define the position and size of the inset plot (left, bottom, width, height)
 for i in range(len(L)):
-    plt.scatter(P,S[i][:],label=r"$L="+str(L[i])+"$")
-    plt.plot(P,S[i][:],color="black")
-    plt.plot(X,Y[i],color="red")
-plt.legend()
+    plt.scatter(P,S[i][:],label=r"$L="+str(L[i])+r"\;t="+str(t[i])+"$")
+    plt.plot(P,S[i][:])
+
+plt.legend(loc=4)
+inset_axes = plt.axes([0.63, 0.4, 0.25, 0.25])
+# Plot the data in the inset plot
+#inset_axes.set_xlabel("$Probability\;p\; \times 10^{3}$")
+#inset_axes.set_ylabel(r"$Entropy\;S(p)$")
+#inset_axes.set_title('Inset Plot')
+inset_axes.legend()
+for i in range(len(L)):
+    inset_axes.set_xlim([6440,6475])
+    inset_axes.set_ylim([0.8,0.9])
+    inset_axes.plot(P,S[i][:])
+    inset_axes.axvline(x=6447,linestyle="dashed")
+
+ 
+
 plt.savefig("./"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
-#write_text(np.array([P,S]),"./"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.aux")
 
 
 

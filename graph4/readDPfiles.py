@@ -48,13 +48,13 @@ if portion==100:
     scaler=StandardScaler()
     scaler.fit(BB)
     scaled_data=scaler.transform(BB)
-    pca=PCA(n_components=1)
+    pca=PCA(svd_solver="full")
     pca.fit(scaled_data)
     if centralized==False:
         pca_L=np.dot(BB,np.multiply(pca.components_.T,vary))
     else:
         pca_L=pca.transform(scaled_data)
-    pca_L=np.abs(pca_L)
+    pca_L=np.abs(pca_L[:,0])
 else:
     tracemalloc.start()
     pca=IncrementalPCA(n_components=1)

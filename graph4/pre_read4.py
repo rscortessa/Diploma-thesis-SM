@@ -57,8 +57,8 @@ err_pca=[0 for i in range(num)]
 pca=np.array(pca)    
 err_pca=np.array(err_pca)
 
-A=[[0 for i in range(num_b)] for i in range(num)]
-B=[[0 for i in range(num_b)] for i in range(num)]
+A=[[0.0 for i in range(num_b)] for i in range(num)]
+B=[[0.0 for i in range(num_b)] for i in range(num)]
 C=[pp+zas*i for i in range(num)]
 
 A=np.array(A)

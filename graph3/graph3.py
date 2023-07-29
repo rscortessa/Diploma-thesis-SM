@@ -45,8 +45,8 @@ m=math.floor(dp/za)*N
 read_portion=int(m*portion/100)
 r_portion=(portion/100*N)
 
-entire_set=False
-centralized=True
+entire_set=True
+centralized=False
 
 #if portion==100:
 #    entire_set=True
@@ -81,6 +81,21 @@ plt.title(r"$P_1\; vector\;$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[all
 plt.scatter(q,z[0,:],s=5,label=r"$PCA_1\;proyection$")
 plt.legend()
 plt.savefig("./graph3/"+system[allsys]+"L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"PCA1_proy.png")
+
+plt.figure(figsize=(8,6))
+plt.title(r"$P_2\; vector\;$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
+plt.scatter(q,z[1,:],s=5,label=r"$PCA_1\;proyection$")
+plt.legend()
+plt.savefig("./graph3/"+system[allsys]+"L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"PCA2_proy.png")
+
+
+
+plt.figure(figsize=(8,6))
+plt.title(r"$P_3\; vector\;$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
+plt.scatter(q,z[2,:],s=5,label=r"$PCA_1\;proyection$")
+plt.legend()
+plt.savefig("./graph3/"+system[allsys]+"L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"PCA3_proy.png")
+
 
 
 
