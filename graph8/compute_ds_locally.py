@@ -50,15 +50,15 @@ for yy in range(waw): #Loop over all diferent points
     for pq in range(fraction):
         print(yy,"1")
         A=pd.read_csv("./DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,skiprows=yy*N+pq*quantity,nrows=quantity)
-        #scaler.fit(A)
-        #scaled_data=scaler.transform(A)
+        scaler.fit(A)
+        scaled_data=scaler.transform(A)
         #del A
-        #gc.collect()
-        #pca=PCA()
-        #pca.fit(scaled_data)
+        gc.collect()
+        pca=PCA(svd_solver="full")
+        pca.fit(scaled_data)
         #x_pca=pca.transform(scaled_data)
-        pca.partial_fit(A)
-        print("yes",pq)
+        #pca.partial_fit(A)
+        #print("yes",pq)
         del A
         gc.collect()
     sing=np.array(pca.singular_values_)
