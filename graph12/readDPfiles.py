@@ -37,7 +37,7 @@ centralized=False
 filename="DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+".txt"
 
 
-A=[[0 for i in range(num)],[0 for i in range(num)]]
+A=[[0.0 for i in range(num)],[0.0 for i in range(num)]]
 pca_L=np.array([])
 
 if portion==100:
