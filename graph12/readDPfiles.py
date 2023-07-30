@@ -32,7 +32,7 @@ num=int(m/N)
 ###Length of the file: m*N
 read_portion=int(m*portion/100)
 r_portion=(portion/100*N)
-centralized=True
+centralized=False
 
 filename="DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+".txt"
 
@@ -54,7 +54,7 @@ if portion==100:
         pca_L=np.dot(BB,np.multiply(pca.components_.T,vary))
     else:
         pca_L=pca.transform(scaled_data)
-    pca_L=np.abs(pca_L[:,0])
+    pca_L=np.abs(pca_L[:,1])
 else:
     tracemalloc.start()
     pca=IncrementalPCA(n_components=1)
@@ -68,7 +68,7 @@ else:
     with pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8,chunksize=read_portion) as reader:
         for chunk in reader:
             x_pca=pca.transform(chunk)
-            x_pca=np.abs(x_pca[:,0])
+            x_pca=np.abs(x_pca[:,1])
             pca_L=np.concatenate((pca_L,x_pca),axis=0)
 
     print(tracemalloc.get_traced_memory())
