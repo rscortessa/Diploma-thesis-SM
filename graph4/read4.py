@@ -40,7 +40,7 @@ read_portion=int(m*portion/100)
 r_portion=(portion/100*N)
 
 entire_set=True
-centralized=True
+centralized=False
 sites=L
 num=math.floor(dp/zas)
 
