@@ -51,8 +51,8 @@ num=int(m/N)
 num_b=len(BB)
 
 
-pca=[0 for i in range(num)]
-err_pca=[0 for i in range(num)]
+pca=[0.0 for i in range(num)]
+err_pca=[0.0 for i in range(num)]
 
 pca=np.array(pca)    
 err_pca=np.array(err_pca)

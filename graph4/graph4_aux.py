@@ -52,7 +52,7 @@ L.sort()
 t.sort()
 sites.sort()
 
-pca_L=[0 for i in range(len(L))]
+pca_L=[0.0 for i in range(len(L))]
 pca_L=np.array(pca_L)    
 num=int(m/N)
 num_l=len(L)
@@ -89,7 +89,7 @@ plt.savefig("./graph4/"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC1
 
 ###Regression for the calculation of the minimum:
 
-minis=[0 for i in range(len(L))]
+minis=[0.0 for i in range(len(L))]
 
 
 PI=pp

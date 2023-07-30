@@ -52,7 +52,7 @@ else:
 
 pca,pca_L=PCA_txt_(L,t,pp,dp,sites,"/graph4/",entire_set,centralized,read_portion,False)
 
-A=[[0 for j in range(num)],[0 for j in range(num)]]
+A=[[0.0 for j in range(num)],[0.0 for j in range(num)]]
 
 
 for j in range(num):
