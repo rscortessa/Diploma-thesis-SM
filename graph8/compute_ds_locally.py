@@ -40,7 +40,7 @@ scaler=StandardScaler()
 
 # It is created the arrays to store the information
 
-S=[0 for i in range(waw)]
+S=[0.0 for i in range(waw)]
 P=np.array([pp+za*i for i in range(waw)])
 
 
