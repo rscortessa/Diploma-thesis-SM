@@ -64,8 +64,8 @@ for yy in range(waw): #Loop over all diferent points
 #It is plotted the entropy:
 # We define the points were the derivative is calculated
 # These points are approximately in the region 5900-6500
-PI=6200
-PF=6600
+PI=pp
+PF=pp+dp
 indexPI=0
 indexPF=0
 X=np.arange(PI,PF,1)
@@ -91,6 +91,7 @@ plt.plot(X,Y,color="red",label="interpolation")
 plt.legend()
 plt.savefig("./graph8/"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
 write_text(np.array([P,S]),"./graph8/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.aux"+str(fr))
+write_text(np.array([P,S]),"./graph8/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.aux")
 
 
 
@@ -100,8 +101,8 @@ write_text(np.array([P,S]),"./graph8/"+str(allsys)+"_L"+str(L)+"T"+str(t)+"P("+s
 #It is calculated the derivative of the entropy and it is plotted as well:
 XX=[]
 DS=[]
+
 for ii in range(len(X)):
-    if X[ii]>=6200 and X[ii]<=6600:
         XX.append(X[ii])
         DS.append(ds[ii])
         

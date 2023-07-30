@@ -78,8 +78,10 @@ ds=[0 for i in range(len(L))]
 Y=[0 for i in range(len(L))]
 #PI=5800
 #PF=6600
-PI=6400
-PF=6500
+#PI=6400
+#PF=6500
+PI=pp
+PF=pp+dp
 indexPI=0
 indexPF=0
 X=np.arange(PI,PF,1)
@@ -113,19 +115,7 @@ for i in range(len(L)):
     plt.plot(P,S[i][:])
 
 plt.legend(loc=4)
-#nset_axes = plt.axes([0.63, 0.4, 0.25, 0.25])
-# Plot the data in the inset plot
-#inset_axes.set_xlabel("$Probability\;p\; \times 10^{3}$")
-#inset_axes.set_ylabel(r"$Entropy\;S(p)$")
-#inset_axes.set_title('Inset Plot')
-#nset_axes.legend()
-#or i in range(len(L)):
-#   inset_axes.set_xlim([6440,6475])
-#   inset_axes.set_ylim([0.8,0.9])
-#   inset_axes.plot(P,S[i][:])
-#   inset_axes.axvline(x=6447,linestyle="dashed")
 
- 
 
 plt.savefig("./"+str(allsys)+"_"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")"+"S.pdf")
 
