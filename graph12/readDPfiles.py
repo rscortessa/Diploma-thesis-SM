@@ -32,7 +32,7 @@ num=int(m/N)
 ###Length of the file: m*N
 read_portion=int(m*portion/100)
 r_portion=(portion/100*N)
-centralized=False
+centralized=True
 
 filename="DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(L)+".txt"
 
