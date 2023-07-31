@@ -108,7 +108,7 @@ else:
     entire_set=False
 
 
-pca,pca_L=PCA_txt_(L,t,pp,dp,sites,"/graph12/",entire_set,centralized,read_portion,True)
+pca,pca_L=PCA_txt_(L,t,pp,dp,sites,"/graph12/",entire_set,centralized,read_portion,False)
 
 A=[[0.0 for j in range(num)],[0.0 for j in range(num)]]
 
