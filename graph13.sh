@@ -8,5 +8,5 @@ z=$5
 N=$6
 allsys=$7
 batch=$8
-make "DP_L${L}T${t}P${pp}S${L}.txt"  dp=$dp z=$z  dir="./graph10/" N=$N allsys=$allsys    
+make "DP_L${L}T${t}P${pp}S${L}.txt"  dp=$dp z=$z  dir="./graph13/" N=$N allsys=$allsys    
 python3 ./graph13/graph13.py $L $t $pp $dp $L $N $z $allsys $batch $9
