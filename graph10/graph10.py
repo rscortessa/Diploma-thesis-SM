@@ -31,7 +31,7 @@ print("This is N",N)
 za=int(arg[7])
 m=math.floor(dp/za)*N
 print("This is m",m)
-
+norma=10000
 allsys=int(arg[8])
 system=["Equilibrium","Total\;system"]
 batch_sizes=int(int(arg[9])*m/100.0)
@@ -76,7 +76,7 @@ plt.xlabel(r"$\langle P_1\rangle$")
 plt.ylabel(r"$CDF\;(\langle P_1\rangle)$")
 
 for i in range(Npoints):
-         plt.plot(pca_psamples[i][:],pde,label="$P="+str(pp+Increment*i*za)+r"\times 10^{-3}$")
+         plt.plot(pca_psamples[i][:],pde,label="$P="+str((pp+Increment*i*za)/norma)+r"$")
 plt.legend()
 plt.savefig("./graph10/pde.pdf")
 
@@ -90,7 +90,7 @@ plt.ylabel(r"$PDF(\langle P_1\rangle)$")
            
 for i in range(Npoints):           
            counts[i],bins[i]=np.histogram(pca_psamples[i][:],bins=Nofpoints[i],density=True)
-           plt.stairs(counts[i],bins[i],label=r"$P="+str(pp+Increment*i*za)+r"\times 10^{-3}$")
+           plt.stairs(counts[i],bins[i],label=r"$P="+str((pp+Increment*i*za)/norma)+r"$")
 plt.legend()
 plt.savefig("./graph10/QPCD.pdf")
 
