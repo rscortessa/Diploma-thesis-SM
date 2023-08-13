@@ -83,15 +83,20 @@ plt.savefig("./graph13/pde.pdf")
 counts=[0 for i in range(Npoints)]
 bins=[0 for i in range(Npoints)]
 
-plt.figure()
+fig, axs=plt.subplots(2)
 plt.title(r"$ \langle P_2 \rangle \;Probability\;Density\;Function$"+"\n"+"$L="+str(L)+"\;t="+str(t)+"\;N="+str(N)+"$")
 plt.xlabel(r"$\langle P_2\rangle$")
 plt.ylabel(r"$PDF(\langle P_2\rangle)$")
-           
-for i in range(Npoints):           
+plt.yscale("log")           
+plt.ylim([0.01,1])
+s=0
+for i in range(Npoints):
            counts[i],bins[i]=np.histogram(pca_psamples[i][:],bins=Nofpoints[i],density=True)
-           plt.stairs(counts[i],bins[i],label=r"$P="+str(pp+Increment*i*za)+r"\times 10^{-3}$")
+           axs[s].stairs(counts[i],bins[i],label=r"$P="+str(pp+Increment*i*za)+r"\times 10^{-3}$")
+           if pp+Increment*i*za<=6447:
+               s=1
 plt.legend()
+
 plt.savefig("./graph13/QPCD.pdf")
 
 
