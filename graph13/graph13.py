@@ -51,7 +51,7 @@ x_pca=pca.transform(scaled_data)[:,1]
 
 ##First it is required to chose the points in the graph to analyze the distribution
 ## As a rule of thumb let's consider four points well distributed in the sample:
-Npoints=8
+Npoints=6
 NofP=math.floor(dp/za)
 Increment=int(NofP/Npoints)
 pca_psamples=[ [x for x in np.sort(x_pca[Increment*i*N:(Increment*i+1)*N]) ] for i in range(Npoints)]
@@ -85,8 +85,11 @@ bins=[0 for i in range(Npoints)]
 
 fig, axs=plt.subplots(2)
 axs[0].set_title(r"$ \langle P_2 \rangle \;Probability\;Density\;Function$"+"\n"+"$L="+str(L)+"\;t="+str(t)+"\;N="+str(N)+"$")
-plt.xlabel(r"$\langle P_2\rangle$")
-plt.ylabel(r"$PDF(\langle P_2\rangle)$")
+axs[0].set_xlabel(r"$\langle P_2\rangle$")
+axs[1].set_ylabel(r"$PDF(\langle P_2\rangle)$")
+axs[1].set_xlabel(r"$\langle P_2\rangle$")
+axs[0].set_ylabel(r"$PDF(\langle P_2\rangle)$")
+
 axs[0].set_yscale("log")           
 axs[0].set_ylim([0.01,1])
 axs[1].set_yscale("log")           
