@@ -51,7 +51,7 @@ x_pca=pca.transform(scaled_data)[:,1]
 
 ##First it is required to chose the points in the graph to analyze the distribution
 ## As a rule of thumb let's consider four points well distributed in the sample:
-Npoints=5
+Npoints=8
 NofP=math.floor(dp/za)
 Increment=int(NofP/Npoints)
 pca_psamples=[ [x for x in np.sort(x_pca[Increment*i*N:(Increment*i+1)*N]) ] for i in range(Npoints)]
@@ -84,19 +84,27 @@ counts=[0 for i in range(Npoints)]
 bins=[0 for i in range(Npoints)]
 
 fig, axs=plt.subplots(2)
-plt.title(r"$ \langle P_2 \rangle \;Probability\;Density\;Function$"+"\n"+"$L="+str(L)+"\;t="+str(t)+"\;N="+str(N)+"$")
+axs[0].set_title(r"$ \langle P_2 \rangle \;Probability\;Density\;Function$"+"\n"+"$L="+str(L)+"\;t="+str(t)+"\;N="+str(N)+"$")
 plt.xlabel(r"$\langle P_2\rangle$")
 plt.ylabel(r"$PDF(\langle P_2\rangle)$")
-plt.yscale("log")           
-plt.ylim([0.01,1])
-s=0
-for i in range(Npoints):
-           counts[i],bins[i]=np.histogram(pca_psamples[i][:],bins=Nofpoints[i],density=True)
-           axs[s].stairs(counts[i],bins[i],label=r"$P="+str(pp+Increment*i*za)+r"\times 10^{-3}$")
-           if pp+Increment*i*za<=6447:
-               s=1
-plt.legend()
+axs[0].set_yscale("log")           
+axs[0].set_ylim([0.01,1])
+axs[1].set_yscale("log")           
+axs[1].set_ylim([0.01,1])
 
+first_one=range(int(Npoints/2))
+second_one=range(int(Npoints/2),Npoints)
+s=0
+
+for i in first_one:
+    counts[i],bins[i]=np.histogram(pca_psamples[i][:],bins=Nofpoints[i],density=True)
+    axs[0].stairs(counts[i],bins[i],label=r"$P="+str(pp+Increment*i*za)+r"\times 10^{-3}$")
+for i in second_one:
+    counts[i],bins[i]=np.histogram(pca_psamples[i][:],bins=Nofpoints[i],density=True)
+    axs[1].stairs(counts[i],bins[i],label=r"$P="+str(pp+Increment*i*za)+r"\times 10^{-3}$")
+           
+axs[0].legend()
+axs[1].legend()
 plt.savefig("./graph13/QPCD.pdf")
 
 
