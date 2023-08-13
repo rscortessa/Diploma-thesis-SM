@@ -16,6 +16,7 @@ int main(int argc,char* argv[])
   std::ofstream file1(name1), file2(name2);
   
   aux=initcond(L,e2,sites); // Initialize the first setup 
+  #pragma omp parallel for private(sys)
   for(int l=0;l<N;l++) // for between different samples
     {
       RANDOM // initialize the distribution with a different seed

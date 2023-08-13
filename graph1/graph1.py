@@ -20,11 +20,13 @@ def LinearR2(col_1, col_2):
 S=["$p<p_c$","$p=p_c$","$p>p_c$"]
 
 plt.figure()
-plt.title("$Directed\; Percolation\; in\; (1+1)\; dimensions$ \n"+"$\;L="+str(L)+"\;t="+str(t)+"$")
-plt.xlabel(r"$t$")
-plt.ylabel(r"$\rho(t)$")
+plt.title("$Directed\; Percolation\; in\; (1+1)\; dimensions$ \n"+"$\;L="+str(L)+"\;t="+str(t)+"$",fontsize=15)
+plt.xlabel(r"$time$",fontsize=15)
+plt.ylabel(r"$\rho(t)$",fontsize=15)
 plt.xscale("log")
 plt.yscale("log")
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
 #plt.ylim([0.1,1])
 
 for i in range(3):
@@ -39,5 +41,5 @@ for i in range(3):
         Result=LinearR2(np.log(x),np.log(zet[1:]))
         plt.plot(x,np.e**(Result[0])*x**(Result[2]),label=r"$\rho=A*t^{\delta}$"+"\n" +"$\delta="+str(round(Result[2],3))+"\pm"+str(round(Result[3],5))+"$")
 plt.tight_layout()
-plt.legend()
+plt.legend(fontsize=12)
 plt.savefig("./graph1/L"+str(L)+"T"+str(t)+"graph1.png")

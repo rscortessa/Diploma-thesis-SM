@@ -35,7 +35,7 @@ int evolution(std::vector<bool> &sys,double p,std::uniform_real_distribution<dou
   copy=sys;
   bool c=0;
   bool d=0;
-#pragma omp parallel for reduction(+:sum) private(c,d)
+  //#pragma omp parallel for reduction(+:sum) private(c,d)
   for(int i=1;i<L+1;i++)
       {
 	c= (copy[i-1]==1 && a(a2)<=p);

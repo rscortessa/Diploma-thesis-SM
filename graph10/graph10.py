@@ -34,7 +34,7 @@ print("This is m",m)
 
 allsys=int(arg[8])
 system=["Equilibrium","Total\;system"]
-batch_sizes=int(arg[9])
+batch_sizes=int(int(arg[9])*m/100.0)
 ## This part of the code creates the image for the percolation:
 
 
@@ -47,11 +47,11 @@ scaled_data=scaler.transform(A)
 pca=IncrementalPCA(n_components=1,batch_size=batch_sizes)
 
 pca.fit(scaled_data)
-x_pca=np.abs(pca.transform(scaled_data)[:,0])
+x_pca=pca.transform(scaled_data)[:,0]
 
 ##First it is required to chose the points in the graph to analyze the distribution
 ## As a rule of thumb let's consider four points well distributed in the sample:
-Npoints=4
+Npoints=5
 NofP=math.floor(dp/za)
 Increment=int(NofP/Npoints)
 pca_psamples=[ [x for x in np.sort(x_pca[Increment*i*N:(Increment*i+1)*N]) ] for i in range(Npoints)]
