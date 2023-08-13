@@ -51,7 +51,7 @@ x_pca=pca.transform(scaled_data)[:,1]
 
 ##First it is required to chose the points in the graph to analyze the distribution
 ## As a rule of thumb let's consider four points well distributed in the sample:
-Npoints=6
+Npoints=8
 NofP=math.floor(dp/za)
 Increment=int(NofP/Npoints)
 pca_psamples=[ [x for x in np.sort(x_pca[Increment*i*N:(Increment*i+1)*N]) ] for i in range(Npoints)]
@@ -108,6 +108,7 @@ for i in second_one:
            
 axs[0].legend()
 axs[1].legend()
+plt.tight_layout()
 plt.savefig("./graph13/QPCD.pdf")
 
 
