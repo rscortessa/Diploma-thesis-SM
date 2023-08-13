@@ -77,7 +77,7 @@ for ii in range(len(L)):
 
 plt.figure(figsize=(8,6))
 plt.title(r"$ \langle P_1 \rangle \; vs \;"+"p$"+"\n $for \;different\; sizes\; (L)\; "+system[allsys]+"$",fontsize=14)
-plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
+plt.xlabel(r"$Probability\;p$",fontsize=14)
 plt.ylabel(r"$\langle P_1 \rangle$",fontsize=14)
 #plt.yscale("log")
 for l in range(num_l):
@@ -96,7 +96,7 @@ PI=pp
 PF=pp+dp
 plt.figure(figsize=(8,6))
 plt.title(r"$\langle P_1 \rangle\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
-plt.xlabel(r"$Probability\;p\; \times 10^{3}$",fontsize=14)
+plt.xlabel(r"$Probability\;p$",fontsize=14)
 plt.ylabel(r"$\langle P_1 \rangle $",fontsize=14)
 plt.yscale("log")
 
