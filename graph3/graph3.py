@@ -188,7 +188,7 @@ plt.figure(figsize=(8,6))
 #plt.title(r"$\langle P_n\rangle \; vs \;"+"p$"+"\n"+r"$L="+str(L)+r"\;"+r"t="+str(t)+r"\;"+system[allsys]+r"$",fontsize=14)
 plt.xlabel(r"$Probability\;p$",fontsize=17)
 plt.ylabel(r"$\langle P_n\rangle"+"\;Quantified\;Principal\;Component$",fontsize=17)
-plt.xvline(x=0.6447,label=r"$p_c=0.6447$")
+plt.axvline(x=0.6447,label=r"$p_c=0.6447$")
 for l in range(num_pca):
     plt.errorbar(C/normalization,A[:,l],yerr=B[:,l],label=r"$\langle P_"+str(l+1)+r"\rangle$")
     plt.plot(C/normalization,A[:,l],color="black") 
