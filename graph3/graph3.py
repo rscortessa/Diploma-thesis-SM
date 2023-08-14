@@ -37,7 +37,7 @@ m=math.floor(dp/za)*N
 print("This is m",m)
 
 allsys=int(arg[8])
-system=["Steady\;state","Full\;evolution"]
+system=["Steady\;state","Entire\;evolution"]
 portion=int(arg[9])
 normalization=10000
 ## This part of the code creates the image for the percolation:
