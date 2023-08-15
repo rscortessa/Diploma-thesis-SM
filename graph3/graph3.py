@@ -185,7 +185,7 @@ C=np.array(C)
 
 
 plt.figure(figsize=(8,6))
-#plt.title(r"$\langle |P_n|\rangle \; vs \;"+"p$"+"\n"+r"$L="+str(L)+r"\;"+r"t="+str(t)+r"\;"+system[allsys]+r"$",fontsize=14)
+plt.title(r"$\langle |P_n|\rangle \; vs \;"+"p$"+"\n"+r"$L="+str(L)+r"\;"+r"\tau="+str(t)+r"\;"+system[allsys]+r"$",fontsize=18)
 plt.xlabel(r"$Probability\;p$",fontsize=17)
 plt.ylabel("$\;Quantified\;Principal\;Component"+r"\;\langle |P_n|\rangle$",fontsize=17)
 plt.axvline(x=0.6447,label=r"$p_c$")
