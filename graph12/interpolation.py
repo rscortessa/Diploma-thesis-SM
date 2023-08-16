@@ -34,7 +34,7 @@ pp=int(arg[1])
 dp=int(arg[2])
 zas=int(arg[3])
 N=int(arg[4])
-allsys=int(arg[5]); system=["Equilibrium","Total\;system"]
+allsys=int(arg[5]); system=["Steady\;state","Entire\;evolution"]
 ww=int(arg[6])
 PI=int(arg[7])
 PF=int(arg[8])
@@ -82,17 +82,17 @@ for ii in range(len(L)):
     #int(m/N) is the number of points with different probability
 
 plt.figure(figsize=(8,6))
-plt.title(r"$ \langle P_1 \rangle \; vs \;"+"p$"+"\n $for \;different\; sizes\; (L)\; "+system[allsys]+"$",fontsize=14)
-plt.xlabel(r"$Probability\;p\;$",fontsize=14)
-plt.ylabel(r"$\langle P_1 \rangle$",fontsize=14)
+plt.title(r"$ \langle |P_2| \rangle \; vs \;"+"p$"+"\n $for \;different\; sizes\; (L)\; "+system[allsys]+"$",fontsize=18)
+plt.xlabel(r"$Probability\;p\;$",fontsize=18)
+plt.ylabel(r"$\langle |P_2| \rangle$",fontsize=18)
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
 for l in range(num_l):
-    print("PLOT")
-    print(A[:,l])
-    plt.errorbar(C/10000,A[:,l],yerr=B[:,l],label=r"$ \langle P_1 \rangle \;L="+str(L[l])+"$")
+    plt.errorbar(C/10000,A[:,l],yerr=B[:,l],label=r"$L="+str(L[l])+"$")
     plt.plot(C/10000,A[:,l],color="black") 
 plt.axvline(x=0.6447, color="b",label="$p_c$")
-plt.legend()
-plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC1.pdf")
+plt.legend(fontsize=18)
+plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PC2.png")
 
 ###Regression for the calculation of the minimum:
 
@@ -100,10 +100,11 @@ minis=[0.0 for i in range(len(L))]
 
 
 plt.figure(figsize=(8,6))
-plt.title(r"$\langle P_1 \rangle\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=14)
-plt.xlabel(r"$Probability\;p$",fontsize=14)
-plt.ylabel(r"$\langle P_1 \rangle $",fontsize=14)
-
+plt.title(r"$\langle |P_2| \rangle\; vs \;"+"p$"+"\n $for different sizes (L) "+system[allsys]+"$",fontsize=18)
+plt.xlabel(r"$Probability\;p$",fontsize=18)
+plt.ylabel(r"$\langle |P_2| \rangle $",fontsize=18)
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
 #PI=5000
 #PF=7000
 for i in range(len(L)):
@@ -123,13 +124,13 @@ for i in range(len(L)):
     jj=np.where(Y == Y.min())[0][0]
     minis[i]=X[jj]
     plt.plot(X/10000,Y)
-    plt.errorbar(C/10000,A[:,i],yerr=B[:,i],label=r"$\langle P_1\rangle \;L="+str(L[i])+"$")
+    plt.errorbar(C/10000,A[:,i],yerr=B[:,i],label=r"$\;L="+str(L[i])+"$")
     plt.plot(C/10000,A[:,i],color="black") 
     plt.plot()
 
 plt.axvline(x=0.6447, color="b",label="$p_c$")
-plt.legend()
-plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PCaux.pdf")
+plt.legend(fontsize=18)
+plt.savefig("./"+str(allsys)+"_"+str(pp)+"P"+str(dp)+"DP"+str(N)+"N"+"PCaux.png")
 
 
 if len(L)>3:
@@ -162,7 +163,7 @@ if len(L)>3:
     x=np.array(Linv).reshape((-1,1))
     Result=LinearR2(x,zet)
     plt.figure(figsize=(8,6))
-    plt.title(r"$Finite\;size\;scaling\;of\;the\;minimum\;of\;\langle P_1 \rangle\;$",fontsize=14)
+    plt.title(r"$Finite\;size\;scaling\;of\;the\;minimum\;of\;\langle| P_2| \rangle\;$",fontsize=14)
     plt.xlabel(r"$1/L$",fontsize=14)
     plt.ylabel(r"$p^*$",fontsize=14)
     plt.xlim([0.0001,max(Linv)+0.001])

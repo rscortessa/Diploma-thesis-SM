@@ -17,8 +17,8 @@ def write_text(A,filename):
         for ii in range(len(A[0,:])):
             C.write(" ".join(map(str,A[:,ii]))+str("\n"))
 
-
-
+sys.path.append("./")
+from analyze_data import PCA_txt_
 arg=sys.argv
 
 L=int(arg[1])
@@ -37,29 +37,28 @@ system=["Equilibrium","Total\;system"]
 batch_sizes=int(int(arg[9])*m/100.0)
 ## This part of the code creates the image for the percolation:
 
-
-A=pd.read_csv("./graph10/DP_L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+str(pp+dp)+")S"+str(sites)+".txt",delim_whitespace=True,header=None,dtype=np.uint8)
-A.info(memory_usage="deep")
-
-scaler=StandardScaler()
-scaler.fit(A)
-scaled_data=scaler.transform(A)
-pca=IncrementalPCA(n_components=1,batch_size=batch_sizes)
-
-pca.fit(scaled_data)
-x_pca=pca.transform(scaled_data)[:,0]
-
+entire_set=True
+centralized=True
+if allsys==0:
+    centralized=False
+pca,x_pca=PCA_txt_(L,t,pp,dp,sites,"/graph10/",entire_set,centralized,batch_sizes,False)
+x_pca=x_pca[:,0]
 ##First it is required to chose the points in the graph to analyze the distribution
 ## As a rule of thumb let's consider four points well distributed in the sample:
-Npoints=5
+Npoints=10
 NofP=math.floor(dp/za)
 Increment=int(NofP/Npoints)
 pca_psamples=[ [x for x in np.sort(x_pca[Increment*i*N:(Increment*i+1)*N]) ] for i in range(Npoints)]
 
 def DiaconisRule(A,N):
     A=np.array(A)
+    A=np.sort(A)
+    print(A[int(3/4*len(A))],A[int(1/4*len(A))])
     dx=2*(A[int(3/4*len(A))]-A[int(1/4*len(A))])/N**(1/3)
     Nu=(A.max()-A.min())/dx
+    print(Nu)
+    if dx==0.0:
+        Nu=0
     return int(Nu)
 
 Nofpoints=[ DiaconisRule(pca_psamples[i][:],N) for i in range(Npoints)]
@@ -71,27 +70,28 @@ print(Nofpoints)
 pde=[i/N for i in range(N)]     
 
 plt.figure()
-plt.title(r"$\langle P_1 \rangle Cumulative\;Distribution\;Function $"+"\n"+"$L="+str(L)+"\;t="+str(t)+"\;N="+str(N)+"$")
-plt.xlabel(r"$\langle P_1\rangle$")
-plt.ylabel(r"$CDF\;(\langle P_1\rangle)$")
+plt.title(r"$P_1 \;Cumulative\;Distribution\;Function $"+"\n"+"$L="+str(L)+"\;"+r"\tau="+str(t)+"\;N="+str(N)+"$")
+plt.xlabel(r"$P_1$")
+plt.ylabel(r"$CDF\;(P_1)$")
 
 for i in range(Npoints):
          plt.plot(pca_psamples[i][:],pde,label="$P="+str((pp+Increment*i*za)/norma)+r"$")
 plt.legend()
-plt.savefig("./graph10/pde.pdf")
+plt.savefig("./graph10/pde.png")
 
 counts=[0 for i in range(Npoints)]
 bins=[0 for i in range(Npoints)]
 
 plt.figure()
-plt.title(r"$ \langle P_1 \rangle \;Probability\;Density\;Function$"+"\n"+"$L="+str(L)+"\;t="+str(t)+"\;N="+str(N)+"$")
-plt.xlabel(r"$\langle P_1\rangle$")
-plt.ylabel(r"$PDF(\langle P_1\rangle)$")
+plt.title(r"$ P_1  \;Probability\;Density\;Function$"+"\n"+"$L="+str(L)+"\;"+r"\tau="+str(t)+"\;N="+str(N)+"$")
+plt.xlabel(r"$P_1$")
+plt.ylabel(r"$PDF( P_1)$")
            
-for i in range(Npoints):           
-           counts[i],bins[i]=np.histogram(pca_psamples[i][:],bins=Nofpoints[i],density=True)
-           plt.stairs(counts[i],bins[i],label=r"$P="+str((pp+Increment*i*za)/norma)+r"$")
+for i in range(Npoints):
+    if Nofpoints[i]!=0:
+        counts[i],bins[i]=np.histogram(pca_psamples[i][:],bins=Nofpoints[i],density=True)
+        plt.stairs(counts[i],bins[i],label=r"$P="+str((pp+Increment*i*za)/norma)+r"$")
 plt.legend()
-plt.savefig("./graph10/QPCD.pdf")
+plt.savefig("./graph10/QPCD.png")
 
 

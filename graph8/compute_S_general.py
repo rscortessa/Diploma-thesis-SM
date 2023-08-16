@@ -33,14 +33,11 @@ def write_text(A,filename):
 ##The file has to be loaded:
 
 arg=sys.argv # Arguments giving by console.
-pp=int(arg[1]) # Initial probability x 10.000.
-dp=int(arg[2]) # Change in probability x 10.000.
-N=int(arg[3]); print("This is N",N) # Number of repetitions for each probability.
-za=int(arg[4]) # Increment in the probability for each cycle x 10.000.
+za=int(arg[1]) # Increment in the probability for each cycle x 10.000.
 m=math.floor(dp/za)*N; print("This is m",m) # Number of points of rows of the data. 
 waw=int(m/N) # Number of points in the p-axis
-allsys=int(arg[5])
-smooth=int(arg[6])
+allsys=int(arg[2])
+smooth=int(arg[3])
 system=["Equilibrium","Total\;system"]
 
 AA=os.listdir("./")
@@ -48,22 +45,25 @@ BB=[]
 
 for x in AA:
     print(x)
-    if re.match(str(allsys)+"_L[0-9]+T[0-9]+P\("+str(pp)+"-"+str(pp+dp)+"\)S.aux",x):
+    if re.match(str(allsys)+"_L[0-9]+T[0-9]+P\([0-9]+-[0-9]+"+"\)S.aux",x):
         BB.append(x)
         
 
 L=[]
 t=[]
 sites=[]
+pi=[]
+pf=[]
 print(BB)
 for x in BB:
     CC=re.findall(r"[0-9]+",x)
     print(CC)
     L.append(int(CC[1]))
     t.append(int(CC[2]))
-
-L.sort()
-t.sort()
+    pi.append(int(CC[3]))
+    pf.append(int(CC[4]))
+#L.sort()
+#t.sort()
 
 
 

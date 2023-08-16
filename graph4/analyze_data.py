@@ -38,18 +38,26 @@ def PCA_txt_(L,t,pp,dp,sites,diry,entire_set,centralized,read_portion,allpc):
         scaled_data=scaler.transform(files)
         pca.fit(scaled_data)
         if centralized==False:
-            pca_L=np.dot(files,np.multiply(pca.components_.T,vary))
+            #CC=np.multiply(pca.components_,vary)
+            pca_L=np.dot(files,pca.components_.T)
+            #print(files,"-",len(CC),"-",len(CC[0]))
         else:
             pca_L=pca.transform(scaled_data)
     else:
-        tracemalloc.start()
         with pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8,chunksize=read_portion) as reader:
             for chunk in reader:
                 print(chunk,sys.getsizeof(chunk))
                 pca.partial_fit(chunk)    
             print("PCA",sys.getsizeof(pca))
+        pca_L=np.array([])
         with pd.read_csv(filename,delim_whitespace=True,header=None,dtype=np.uint8,chunksize=read_portion) as reader:
             for chunk in reader:
-                x_pca=pca.transform(chunk)
-                pca_L=np.concatenate((pca_L,x_pca),axis=0)
+                if centralized==False:
+                    x_pca=np.dot(chunk,pca.components_.T)
+                else:
+                    x_pca=pca.transform(chunk)
+                try:
+                    pca_L=np.concatenate((pca_L,x_pca),axis=0)
+                except:
+                    pca_L=x_pca
     return pca,pca_L

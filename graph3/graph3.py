@@ -46,7 +46,7 @@ read_portion=int(m*portion/100)
 r_portion=(portion/100*N)
 
 entire_set=True
-centralized=True
+centralized=False
 
 #if portion==100:
 #    entire_set=True
@@ -83,6 +83,8 @@ else:
     
 plt.figure(figsize=(8,6))
 #plt.title(r"$Proyection \;of \;P_1\;over \;the\;total\;lattice\;sites$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
+plt.xlabel("$Lattice\;sites$",fontsize=18)
+plt.ylabel("$Projection$",fontsize=18)
 plt.scatter(q,z[0,:],s=5,label=r"$P_1\;projection$")
 plt.xticks(fontsize=18)
 plt.yticks(fontsize=18)
@@ -93,6 +95,8 @@ plt.savefig("./graph3/"+system[allsys]+"L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+st
 plt.figure(figsize=(8,6))
 plt.xticks(fontsize=18)
 plt.yticks(fontsize=18)
+plt.xlabel("$Lattice\;sites$",fontsize=18)
+plt.ylabel("$Projection$",fontsize=18)
 #plt.title(r"$Proyection \;of \;P_2\;over \;the\;total\;lattice\;sites$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
 plt.scatter(q,z[1,:],s=5,label=r"$P_2\;projection$")
 plt.legend(fontsize=15)
@@ -103,8 +107,10 @@ plt.savefig("./graph3/"+system[allsys]+"L"+str(L)+"T"+str(t)+"P("+str(pp)+"-"+st
 
 
 plt.figure(figsize=(8,6))
-plt.xticks(fontsize=15)
-plt.yticks(fontsize=15)
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
+plt.xlabel("$Lattice\;sites$",fontsize=18)
+plt.ylabel("$Projection$",fontsize=18)
 #plt.title(r"$Proyection \;of \;P_3\;over \;the\;total\;lattice\;sites$"+"\n"+"$L="+str(L)+"\;"+"t="+str(t)+"\;"+system[allsys]+"$",fontsize=14)
 plt.scatter(q,z[2,:],s=5,label=r"$P_3\;projection$")
 plt.legend(fontsize=15)
